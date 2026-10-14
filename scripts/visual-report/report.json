@@ -21,7 +21,7 @@
     "normRows": [],
     "normSizeSame": true,
     "pass": true,
-    "retries": 0,
+    "retries": 1,
     "refErrors": [],
     "candErrors": []
   },
@@ -217,7 +217,7 @@
     "normRows": [],
     "normSizeSame": true,
     "pass": true,
-    "retries": 0,
+    "retries": 1,
     "refErrors": [],
     "candErrors": []
   },
@@ -371,7 +371,7 @@
     "normRows": [],
     "normSizeSame": true,
     "pass": true,
-    "retries": 1,
+    "retries": 0,
     "refErrors": [],
     "candErrors": []
   },

@@ -1,0 +1,2004 @@
+[
+  {
+    "page": "about-us",
+    "viewport": "desktop",
+    "step": "mega About",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "about-us",
+    "viewport": "desktop",
+    "step": "mega Programs",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "about-us",
+    "viewport": "desktop",
+    "step": "mega Partners",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "about-us",
+    "viewport": "desktop",
+    "step": "sticky header",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 967
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 967
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "about-us",
+    "viewport": "mobile",
+    "step": "menu toggle",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "about-us",
+    "viewport": "mobile",
+    "step": "menu Programs",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "changing-lives",
+    "viewport": "desktop",
+    "step": "mega About",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "changing-lives",
+    "viewport": "desktop",
+    "step": "mega Programs",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "changing-lives",
+    "viewport": "desktop",
+    "step": "mega Partners",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "changing-lives",
+    "viewport": "desktop",
+    "step": "sticky header",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 900
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 900
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "changing-lives",
+    "viewport": "mobile",
+    "step": "menu toggle",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "changing-lives",
+    "viewport": "mobile",
+    "step": "menu Programs",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "clean-energy",
+    "viewport": "desktop",
+    "step": "mega About",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "clean-energy",
+    "viewport": "desktop",
+    "step": "mega Programs",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "clean-energy",
+    "viewport": "desktop",
+    "step": "mega Partners",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "clean-energy",
+    "viewport": "desktop",
+    "step": "sticky header",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 900
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 900
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "clean-energy",
+    "viewport": "mobile",
+    "step": "menu toggle",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "clean-energy",
+    "viewport": "mobile",
+    "step": "menu Programs",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "contact",
+    "viewport": "desktop",
+    "step": "mega About",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "contact",
+    "viewport": "desktop",
+    "step": "mega Programs",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "contact",
+    "viewport": "desktop",
+    "step": "mega Partners",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "contact",
+    "viewport": "desktop",
+    "step": "sticky header",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 967
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 967
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "contact",
+    "viewport": "mobile",
+    "step": "menu toggle",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "contact",
+    "viewport": "mobile",
+    "step": "menu Programs",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "contact",
+    "viewport": "desktop",
+    "step": "topic router",
+    "ok": true,
+    "state": {
+      "topic": "Community Need",
+      "badge": "Community Need",
+      "subject": "Community Need",
+      "mail": "FSCD Website: Community Need",
+      "names": "topic,_subject,_form,_token,_page,website,name,email,organization,role_title,location,country_location,role_community_profile,community_need,subject,message"
+    },
+    "jsErrors": []
+  },
+  {
+    "page": "dilip-limaye",
+    "viewport": "desktop",
+    "step": "mega About",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "dilip-limaye",
+    "viewport": "desktop",
+    "step": "mega Programs",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "dilip-limaye",
+    "viewport": "desktop",
+    "step": "mega Partners",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "dilip-limaye",
+    "viewport": "desktop",
+    "step": "sticky header",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 900
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 900
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "dilip-limaye",
+    "viewport": "mobile",
+    "step": "menu toggle",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "dilip-limaye",
+    "viewport": "mobile",
+    "step": "menu Programs",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "eye-care",
+    "viewport": "desktop",
+    "step": "mega About",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "eye-care",
+    "viewport": "desktop",
+    "step": "mega Programs",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "eye-care",
+    "viewport": "desktop",
+    "step": "mega Partners",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "eye-care",
+    "viewport": "desktop",
+    "step": "sticky header",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 900
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 900
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "eye-care",
+    "viewport": "mobile",
+    "step": "menu toggle",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "eye-care",
+    "viewport": "mobile",
+    "step": "menu Programs",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "global-benefits",
+    "viewport": "desktop",
+    "step": "mega About",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "global-benefits",
+    "viewport": "desktop",
+    "step": "mega Programs",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "global-benefits",
+    "viewport": "desktop",
+    "step": "mega Partners",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "global-benefits",
+    "viewport": "desktop",
+    "step": "sticky header",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 900
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 900
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "global-benefits",
+    "viewport": "mobile",
+    "step": "menu toggle",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "global-benefits",
+    "viewport": "mobile",
+    "step": "menu Programs",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "home",
+    "viewport": "desktop",
+    "step": "mega About",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "home",
+    "viewport": "desktop",
+    "step": "mega Programs",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "home",
+    "viewport": "desktop",
+    "step": "mega Partners",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "home",
+    "viewport": "desktop",
+    "step": "sticky header",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 900
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 900
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "home",
+    "viewport": "mobile",
+    "step": "menu toggle",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "home",
+    "viewport": "mobile",
+    "step": "menu Programs",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "leadership",
+    "viewport": "desktop",
+    "step": "mega About",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "leadership",
+    "viewport": "desktop",
+    "step": "mega Programs",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "leadership",
+    "viewport": "desktop",
+    "step": "mega Partners",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "leadership",
+    "viewport": "desktop",
+    "step": "sticky header",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 900
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 900
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "leadership",
+    "viewport": "mobile",
+    "step": "menu toggle",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "leadership",
+    "viewport": "mobile",
+    "step": "menu Programs",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "our-programs",
+    "viewport": "desktop",
+    "step": "mega About",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "our-programs",
+    "viewport": "desktop",
+    "step": "mega Programs",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "our-programs",
+    "viewport": "desktop",
+    "step": "mega Partners",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "our-programs",
+    "viewport": "desktop",
+    "step": "sticky header",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 901
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 901
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "our-programs",
+    "viewport": "mobile",
+    "step": "menu toggle",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "our-programs",
+    "viewport": "mobile",
+    "step": "menu Programs",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "privacy-policy-2",
+    "viewport": "desktop",
+    "step": "mega About",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "privacy-policy-2",
+    "viewport": "desktop",
+    "step": "mega Programs",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "privacy-policy-2",
+    "viewport": "desktop",
+    "step": "mega Partners",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "privacy-policy-2",
+    "viewport": "desktop",
+    "step": "sticky header",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 900
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 900
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "privacy-policy-2",
+    "viewport": "mobile",
+    "step": "menu toggle",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "privacy-policy-2",
+    "viewport": "mobile",
+    "step": "menu Programs",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "resources",
+    "viewport": "desktop",
+    "step": "mega About",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "resources",
+    "viewport": "desktop",
+    "step": "mega Programs",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "resources",
+    "viewport": "desktop",
+    "step": "mega Partners",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "resources",
+    "viewport": "desktop",
+    "step": "sticky header",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 900
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 900
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "resources",
+    "viewport": "mobile",
+    "step": "menu toggle",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "resources",
+    "viewport": "mobile",
+    "step": "menu Programs",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "strategic-partners",
+    "viewport": "desktop",
+    "step": "mega About",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "strategic-partners",
+    "viewport": "desktop",
+    "step": "mega Programs",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "strategic-partners",
+    "viewport": "desktop",
+    "step": "mega Partners",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "strategic-partners",
+    "viewport": "desktop",
+    "step": "sticky header",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 961
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": true,
+      "scrollY": 961
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "strategic-partners",
+    "viewport": "mobile",
+    "step": "menu toggle",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "strategic-partners",
+    "viewport": "mobile",
+    "step": "menu Programs",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "terms-of-service",
+    "viewport": "desktop",
+    "step": "mega About",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "About"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "terms-of-service",
+    "viewport": "desktop",
+    "step": "mega Programs",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "terms-of-service",
+    "viewport": "desktop",
+    "step": "mega Partners",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [
+        "Partners"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "terms-of-service",
+    "viewport": "desktop",
+    "step": "sticky header",
+    "ok": true,
+    "state": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 900
+    },
+    "refState": {
+      "navOpen": false,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 900
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "terms-of-service",
+    "viewport": "mobile",
+    "step": "menu toggle",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  },
+  {
+    "page": "terms-of-service",
+    "viewport": "mobile",
+    "step": "menu Programs",
+    "ok": true,
+    "state": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "refState": {
+      "navOpen": true,
+      "megaOpen": [
+        "Programs"
+      ],
+      "compact": false,
+      "scrollY": 0
+    },
+    "pixels": 0,
+    "error": "",
+    "jsErrors": []
+  }
+]

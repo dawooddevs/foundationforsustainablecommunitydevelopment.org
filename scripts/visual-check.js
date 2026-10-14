@@ -109,6 +109,8 @@ async function capture(browser, url, refHtml, vp, errors) {
   page.on('pageerror', (e) => errors.push(String(e.message || e)));
   page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource|ERR_FAILED|net::/.test(m.text())) errors.push(m.text()); });
   await page.clock.install({ time: new Date('2026-10-01T12:00:00Z') });
+  // Paused: timers (rotating headlines, sliders, counters) advance only through clock.runFor(), never with load time
+  await page.clock.pauseAt(new Date('2026-10-01T12:00:01Z'));
   await route(page, refHtml);
   await page.goto(url, { waitUntil: 'load', timeout: 90000 });
   await page.addStyleTag({ content: FREEZE_CSS });

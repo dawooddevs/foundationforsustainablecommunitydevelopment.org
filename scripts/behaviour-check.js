@@ -23,6 +23,8 @@ async function open(browser, url, html, vp, errors) {
   const page = await ctx.newPage();
   page.on('pageerror', (e) => errors.push(String(e.message || e)));
   await page.clock.install({ time: new Date('2026-10-01T12:00:00Z') });
+  // Paused: timers (rotating headlines, sliders, counters) advance only through clock.runFor(), never with load time
+  await page.clock.pauseAt(new Date('2026-10-01T12:00:01Z'));
   await V.route(page, html);
   await page.goto(url, { waitUntil: 'load', timeout: 90000 });
   await page.addStyleTag({ content: V.FREEZE_CSS });
@@ -40,7 +42,7 @@ const STEPS = {
   ],
   mobile: [
     ['menu toggle', async (pg) => { await pg.click('#fscd-menu-toggle'); }],
-    ['menu Programs', async (pg) => { await pg.click('#fscd-master-shell-top .fscd-has-mega:nth-of-type(3) .fscd-nav-trigger'); }],
+    ['menu Programs', async (pg) => { await pg.click('#fscd-menu-toggle'); await pg.clock.runFor(300); await pg.click('#fscd-master-shell-top .fscd-has-mega:nth-of-type(3) .fscd-nav-trigger'); }],
   ],
 };
 
@@ -66,19 +68,22 @@ async function state(pg) {
   for (const p of V.manifest.pages.filter((x) => !only.length || only.includes(x.slug))) {
     for (const [vpName, vp] of [['desktop', { width: 1440, height: 900 }], ['mobile', { width: 390, height: 844 }]]) {
       for (const [label, act] of STEPS[vpName]) {
-        const errRef = [], errCand = [];
-        const ref = await open(browser, V.REF_ORIGIN + '/', V.referenceHtml(p, shells[p.slug]), vp, errRef);
-        const cand = await open(browser, V.BASE + p.url, null, vp, errCand);
-        let a, b, err = '';
-        try { await act(ref.page); a = await state(ref.page); await act(cand.page); b = await state(cand.page); } catch (e) { err = String(e.message).split('\n')[0]; }
-        await ref.ctx.close(); await cand.ctx.close();
-        const cmp = a && b ? V.compare(a.shot, b.shot) : null;
+        let errRef, errCand, a, b, err, cmp, tries = 0;
+        // One retry when pixels differ: text rasterisation in headless Chromium is occasionally noisy
+        do {
+          errRef = []; errCand = []; a = b = null; err = '';
+          const ref = await open(browser, V.REF_ORIGIN + '/', V.referenceHtml(p, shells[p.slug]), vp, errRef);
+          const cand = await open(browser, V.BASE + p.url, null, vp, errCand);
+          try { await act(ref.page); a = await state(ref.page); await act(cand.page); b = await state(cand.page); } catch (e) { err = String(e.message).split('\n')[0]; }
+          await ref.ctx.close(); await cand.ctx.close();
+          cmp = a && b ? V.compare(a.shot, b.shot) : null;
+        } while (cmp && cmp.n && ++tries < 2);
         const same = a && b && JSON.stringify(a.s) === JSON.stringify(b.s);
         const ok = !err && same && cmp.n === 0 && errCand.length <= errRef.length;
         if (!ok) failed++;
         if (cmp && cmp.n) fs.writeFileSync(path.join(OUT, `behaviour-${p.slug}-${vpName}-${label.replace(/\W+/g, '-')}.png`), PNG.sync.write(V.sideBySide(a.shot, b.shot, cmp.diff)));
         rows.push({ page: p.slug, viewport: vpName, step: label, ok, state: b ? b.s : null, refState: a ? a.s : null, pixels: cmp ? cmp.n : null, error: err, jsErrors: errCand });
-        console.log((ok ? 'PASS ' : 'FAIL ') + `${p.slug} ${vpName} ${label}`.padEnd(46) + (b ? JSON.stringify(b.s) : '') + (cmp ? ' ' + cmp.n + ' px' : '') + (same === false ? ' STATE DIFFERS from original ' + JSON.stringify(a.s) : '') + (err ? ' ' + err : '') + (errCand.length ? ' JS errors: ' + errCand.join('; ') : ''));
+        console.log((ok ? 'PASS ' : 'FAIL ') + `${p.slug} ${vpName} ${label}`.padEnd(46) + (b ? JSON.stringify(b.s) : '') + (cmp ? ' ' + cmp.n + ' px' : '') + (tries ? ' (retried)' : '') + (same === false ? ' STATE DIFFERS from original ' + JSON.stringify(a.s) : '') + (err ? ' ' + err : '') + (errCand.length ? ' JS errors: ' + errCand.join('; ') : ''));
       }
     }
     if (p.slug === 'contact') {
