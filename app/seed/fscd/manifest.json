@@ -1,0 +1,275 @@
+{
+  "pages": [
+    {
+      "slug": "about-us",
+      "url": "/about-us/",
+      "title": "About Us",
+      "file": "pages/about-us.html",
+      "source_file": "About.txt",
+      "bytes": 332555,
+      "full_document": false
+    },
+    {
+      "slug": "changing-lives",
+      "url": "/changing-lives/",
+      "title": "Changing Lives",
+      "file": "pages/changing-lives.html",
+      "source_file": "Changing Lives.txt",
+      "bytes": 288927,
+      "full_document": false
+    },
+    {
+      "slug": "clean-energy",
+      "url": "/clean-energy/",
+      "title": "Clean Energy",
+      "file": "pages/clean-energy.html",
+      "source_file": "Clean Energy.txt",
+      "bytes": 650892,
+      "full_document": false
+    },
+    {
+      "slug": "contact",
+      "url": "/contact/",
+      "title": "Contact",
+      "file": "pages/contact.html",
+      "source_file": "Contact.txt",
+      "bytes": 281897,
+      "full_document": false
+    },
+    {
+      "slug": "dilip-limaye",
+      "url": "/dilip-limaye/",
+      "title": "Dilip Limaye",
+      "file": "pages/dilip-limaye.html",
+      "source_file": "Dilip Limaye.txt",
+      "bytes": 272661,
+      "full_document": false
+    },
+    {
+      "slug": "eye-care",
+      "url": "/eye-care/",
+      "title": "Eye Care",
+      "file": "pages/eye-care.html",
+      "source_file": "Eye Care.txt",
+      "bytes": 44044,
+      "full_document": false
+    },
+    {
+      "slug": "global-benefits",
+      "url": "/global-benefits/",
+      "title": "Global Benefits",
+      "file": "pages/global-benefits.html",
+      "source_file": "Global Benefits.txt",
+      "bytes": 295319,
+      "full_document": false
+    },
+    {
+      "slug": "home",
+      "url": "/",
+      "title": "Home",
+      "file": "pages/home.html",
+      "source_file": "Home.txt",
+      "bytes": 510025,
+      "full_document": true
+    },
+    {
+      "slug": "leadership",
+      "url": "/leadership/",
+      "title": "Leadership",
+      "file": "pages/leadership.html",
+      "source_file": "Leadership.txt",
+      "bytes": 287890,
+      "full_document": false
+    },
+    {
+      "slug": "our-programs",
+      "url": "/our-programs/",
+      "title": "Our Programs",
+      "file": "pages/our-programs.html",
+      "source_file": "Our Programs.txt",
+      "bytes": 295539,
+      "full_document": false
+    },
+    {
+      "slug": "privacy-policy-2",
+      "url": "/privacy-policy-2/",
+      "title": "Privacy Policy",
+      "file": "pages/privacy-policy-2.html",
+      "source_file": "Privacy Policy.txt",
+      "bytes": 241663,
+      "full_document": false
+    },
+    {
+      "slug": "resources",
+      "url": "/resources/",
+      "title": "Resources",
+      "file": "pages/resources.html",
+      "source_file": "Resources.txt",
+      "bytes": 293314,
+      "full_document": false
+    },
+    {
+      "slug": "strategic-partners",
+      "url": "/strategic-partners/",
+      "title": "Strategic Partners",
+      "file": "pages/strategic-partners.html",
+      "source_file": "Strategic Partners.txt",
+      "bytes": 310131,
+      "full_document": false
+    },
+    {
+      "slug": "terms-of-service",
+      "url": "/terms-of-service/",
+      "title": "Terms of Service",
+      "file": "pages/terms-of-service.html",
+      "source_file": "Terms of Service.txt",
+      "bytes": 258494,
+      "full_document": false
+    }
+  ],
+  "media": [
+    "Meet-the-Eyer2-The-ultimate-all-in-one-portable-device.mp4",
+    "fscd-eye-01.jpg",
+    "fscd-eye-02.jpg",
+    "fscd-eye-03.webp",
+    "fscd-eye-04.webp",
+    "fscd-eye-05.webp",
+    "fscd-eye-06.webp",
+    "fscd-eye-07.webp",
+    "fscd-eye-08.webp",
+    "fscd-eye-09.webp",
+    "fscd-eye-10.webp",
+    "logo-new-final.png"
+  ],
+  "embedded_images": [
+    {
+      "file": "about-us-embedded-01.jpg",
+      "first_page": "about-us",
+      "bytes": 45140
+    },
+    {
+      "file": "about-us-embedded-02.jpg",
+      "first_page": "about-us",
+      "bytes": 277890
+    },
+    {
+      "file": "about-us-embedded-03.jpg",
+      "first_page": "about-us",
+      "bytes": 135271
+    },
+    {
+      "file": "about-us-embedded-04.jpg",
+      "first_page": "about-us",
+      "bytes": 341573
+    },
+    {
+      "file": "dilip-limaye-embedded-01.png",
+      "first_page": "dilip-limaye",
+      "bytes": 3145738
+    },
+    {
+      "file": "home-embedded-01.png",
+      "first_page": "home",
+      "bytes": 347183
+    },
+    {
+      "file": "home-embedded-02.jpg",
+      "first_page": "home",
+      "bytes": 358461
+    },
+    {
+      "file": "home-embedded-03.png",
+      "first_page": "home",
+      "bytes": 527276
+    },
+    {
+      "file": "strategic-partners-embedded-01.png",
+      "first_page": "strategic-partners",
+      "bytes": 249038
+    }
+  ],
+  "missing_files": [
+    "https://ahrons18.sg-host.com/wp-content/uploads/fscd/fscd-eye.css",
+    "https://ahrons18.sg-host.com/wp-content/uploads/fscd/fscd-eye.js",
+    "https://foundationforsustainablecommunitydevelopment.org/wp-content/uploads/2026/08/Copy-of-Copy-of-Untitled-Design-1.png",
+    "https://foundationforsustainablecommunitydevelopment.org/wp-content/uploads/2026/08/Copy-of-Copy-of-Untitled-Design.png",
+    "https://foundationforsustainablecommunitydevelopment.org/wp-content/uploads/2026/08/Untitled-design-86.png",
+    "https://foundationforsustainablecommunitydevelopment.org/wp-content/uploads/2026/08/eye-scan.png"
+  ],
+  "third_party_images": {
+    "images.unsplash.com": [
+      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=85",
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2000&q=88",
+      "https://images.unsplash.com/photo-1504159506876-f8338247a14a?auto=format&fit=crop&w=1000&q=88",
+      "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1000&q=85",
+      "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1200&q=90",
+      "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1500&q=90",
+      "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1600&q=90",
+      "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1700&q=88",
+      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=88",
+      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1000&q=86",
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2200&q=88",
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=88",
+      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=85",
+      "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1000&q=86",
+      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=88",
+      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=88",
+      "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=1400&q=90",
+      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=2000&q=86",
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1000&q=85",
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=88",
+      "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=85",
+      "https://images.unsplash.com/photo-1565255822848-80db21938837?auto=format&fit=crop&fm=jpg&q=84&w=2200",
+      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1900&q=88",
+      "https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1200&q=90",
+      "https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1707721690619-7658b6058fa6?auto=format&fit=crop&w=1200&q=90",
+      "https://images.unsplash.com/photo-1707721690746-cdbdabadebc2?auto=format&fit=crop&w=1600&q=90",
+      "https://images.unsplash.com/photo-1708513520656-dd5d6d8a71fb?auto=format&fit=crop&w=1000&q=88",
+      "https://images.unsplash.com/photo-1708513520656-dd5d6d8a71fb?auto=format&fit=crop&w=1200&q=90",
+      "https://images.unsplash.com/photo-1708593337380-6f97a307696f?auto=format&fit=crop&w=1200&q=90",
+      "https://images.unsplash.com/photo-1708593337380-6f97a307696f?auto=format&fit=crop&w=1400&q=90",
+      "https://images.unsplash.com/photo-1708593343442-7595427ddf7b?auto=format&fit=crop&w=2000&q=88",
+      "https://images.unsplash.com/photo-1745187946672-2c1d8cf26a2b?auto=format&fit=crop&w=1400&q=88",
+      "https://images.unsplash.com/photo-1756885375450-65094876d21f?auto=format&fit=crop&w=1200&q=90",
+      "https://images.unsplash.com/photo-1761815139336-40b16b4cb8ee?auto=format&fit=crop&fm=jpg&q=82&w=1600",
+      "https://images.unsplash.com/photo-1761818645907-8bed418b415b?auto=format&fit=crop&w=1400&q=88",
+      "https://images.unsplash.com/photo-1769556352951-682ba1b3f0a7?auto=format&fit=crop&w=1400&q=88",
+      "https://images.unsplash.com/photo-1769556669134-fe947b53bdbf?auto=format&fit=crop&w=1400&q=88",
+      "https://images.unsplash.com/photo-1770943558988-2c605d6bd5a7?auto=format&fit=crop&w=1400&q=88",
+      "https://images.unsplash.com/photo-1784623305001-c7aebfc7f226?auto=format&fit=crop&w=1800&q=88"
+    ],
+    "upload.wikimedia.org": [
+      "https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg"
+    ],
+    "images.pexels.com": [
+      "https://images.pexels.com/photos/28141441/pexels-photo-28141441.jpeg?auto=compress&dpr=1&h=1200&w=1600",
+      "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1800",
+      "https://images.pexels.com/photos/32213424/pexels-photo-32213424.jpeg?auto=compress&cs=tinysrgb&w=2000",
+      "https://images.pexels.com/photos/35551059/pexels-photo-35551059.jpeg?auto=compress&cs=tinysrgb&w=1800",
+      "https://images.pexels.com/photos/36035002/pexels-photo-36035002.jpeg?auto=compress&cs=tinysrgb&w=1800",
+      "https://images.pexels.com/photos/36035002/pexels-photo-36035002.jpeg?auto=compress&cs=tinysrgb&w=2200",
+      "https://images.pexels.com/photos/3860801/pexels-photo-3860801.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "https://images.pexels.com/photos/5452189/pexels-photo-5452189.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "https://images.pexels.com/photos/5668510/pexels-photo-5668510.jpeg?auto=compress&cs=tinysrgb&w=2000",
+      "https://images.pexels.com/photos/5738735/pexels-photo-5738735.jpeg?auto=compress&cs=tinysrgb&w=1800",
+      "https://images.pexels.com/photos/8470832/pexels-photo-8470832.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "https://images.pexels.com/photos/8636601/pexels-photo-8636601.jpeg?auto=compress&cs=tinysrgb&w=1800"
+    ],
+    "images.squarespace-cdn.com": [
+      "https://images.squarespace-cdn.com/content/v1/6056443e64e2853d2ea80edf/18be9dcb-ea87-47e6-a21a-43e829b0b526/JaisalmerPEC-2024-2.jpg"
+    ],
+    "niet.co.in": [
+      "https://niet.co.in/uploads/innovation_lab/large_image/660e965e590661712232030.webp"
+    ],
+    "0b18ae52.delivery.rocketcdn.me": [
+      "https://0b18ae52.delivery.rocketcdn.me/wp-content/uploads/2026/03/img_eyeressential_eyer2.png",
+      "https://0b18ae52.delivery.rocketcdn.me/wp-content/uploads/2026/03/img_portabilidade_01.jpeg",
+      "https://0b18ae52.delivery.rocketcdn.me/wp-content/uploads/2026/07/infrared_eyer2_fundus_camera.png"
+    ]
+  },
+  "not_on_server": {
+    "https://ahrons18.sg-host.com/wp-content/uploads/2026/08/Foundation-Logo-Icon.png": "Does not exist on the current server (confirmed by the user). Used only as a 4.5%-opacity footer background in CSS, so the live site shows nothing there. Leave the reference as is."
+  }
+}

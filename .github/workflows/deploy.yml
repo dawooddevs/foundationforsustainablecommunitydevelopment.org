@@ -1,0 +1,111 @@
+# Deploy to SiteGround over SSH (rsync). Run from GitHub → Actions → "Deploy to SiteGround" → Run workflow.
+#
+# Repository secrets (Settings → Secrets and variables → Actions):
+#   SSH_HOST         the SSH hostname from Site Tools → Devs → SSH Keys Manager → SSH Credentials
+#   SSH_USER         e.g. u1234-abcdefgh
+#   SSH_PRIVATE_KEY  the full private key text from SiteGround (-----BEGIN ... END-----)
+#   SSH_PASSPHRASE   the password you set when generating the key (leave unset if none)
+#   SSH_DIR          optional, defaults to www/ahrons23.sg-host.com/public_html/
+#
+# Never uploads or deletes: app/config.php, database/logs/sessions in app/storage, media in uploads/.
+# After uploading, pending content migrations (app/migrations/) are run once on the server.
+#
+# First deploy: run the workflow with "first_deploy" ticked. That skips the check that the
+# folder already holds this site (it must exist and contain no other site's index.php), then
+# open https://<domain>/install/ to create the database tables and the admin account.
+name: Deploy to SiteGround
+
+on:
+  workflow_dispatch:
+    inputs:
+      first_deploy:
+        description: 'First deploy into an empty public_html (skips the existing-site check)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_DIR: ${{ secrets.SSH_DIR || 'www/ahrons23.sg-host.com/public_html/' }}
+      SSH_PORT: '18765'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: PHP syntax check
+        run: find . -name '*.php' -not -path './node_modules/*' -print0 | xargs -0 -n1 php -l
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build minified assets
+        run: npm install --no-audit --no-fund && npm run build
+
+      - name: Prepare SSH key
+        env:
+          KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$KEY" | tr -d '\r' > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          if [ -n "$PASSPHRASE" ]; then
+            ssh-keygen -p -q -P "$PASSPHRASE" -N "" -f ~/.ssh/deploy_key
+          fi
+          ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          printf 'Host sg\n  HostName %s\n  User %s\n  Port %s\n  IdentityFile ~/.ssh/deploy_key\n  IdentitiesOnly yes\n  StrictHostKeyChecking yes\n' "$SSH_HOST" "$SSH_USER" "$SSH_PORT" > ~/.ssh/config
+
+      - name: Check target folder
+        run: |
+          echo "Target: $SSH_DIR"
+          ssh sg "cd '$SSH_DIR' && pwd && ls -la | head -40"
+          if [ "${{ inputs.first_deploy }}" = "true" ]; then
+            # First deploy: the folder must exist, and any index.php in it must not be another app's
+            ssh sg "test -d '$SSH_DIR'" || { echo "::error::$SSH_DIR does not exist. Check the SSH_DIR secret."; exit 1; }
+            if ssh sg "test -f '$SSH_DIR/index.php'" && ! ssh sg "grep -q 'Public front controller' '$SSH_DIR/index.php'"; then
+              echo "::error::$SSH_DIR already contains a different index.php. Empty the folder (or fix SSH_DIR) first."; exit 1
+            fi
+          else
+            # Safety: only deploy into the folder that already holds this site
+            ssh sg "test -f '$SSH_DIR/index.php' && grep -q 'Public front controller' '$SSH_DIR/index.php'" \
+              || { echo "::error::$SSH_DIR does not hold this site yet. Check SSH_DIR, or run with first_deploy ticked."; exit 1; }
+          fi
+
+      - name: Upload changed files (rsync)
+        run: |
+          rsync -rlz --checksum --itemize-changes --omit-dir-times --no-perms --chmod=D755,F644 \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude 'node_modules/' \
+            --exclude 'scripts/' \
+            --exclude 'docs/' \
+            --exclude '.gitignore' \
+            --exclude 'package.json' \
+            --exclude 'package-lock.json' \
+            --exclude '*.md' \
+            --exclude '/app/config.php' \
+            --exclude '/app/storage/*.sqlite*' \
+            --exclude '/app/storage/*.log' \
+            --exclude '/app/storage/sessions/' \
+            --exclude '/uploads/20*/' \
+            -e ssh ./ "sg:$SSH_DIR"
+
+      - name: Verify
+        run: |
+          ssh sg "cd '$SSH_DIR' && ls -la index.php assets/css/site.min.css && php -l index.php"
+          ssh sg "test -f '$SSH_DIR/app/config.php'" || echo "::notice::Not installed yet. Open https://<domain>/install/ to finish setup."
+
+      # One-time content updates in app/migrations/ (each runs once; see app/cli/migrate.php)
+      - name: Run content migrations
+        run: ssh sg "cd '$SSH_DIR' && php app/cli/migrate.php"

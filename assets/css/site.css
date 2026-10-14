@@ -1,0 +1,51 @@
+/*
+ * SCAFFOLD stylesheet: just enough to make the starter templates readable. Replace it with
+ * the real design. --primary and --accent come from Dashboard → Settings → Branding
+ * (printed in app/views/layout.php). Run `npm run build` after editing to update site.min.css.
+ */
+:root { --primary: #0c2d5e; --accent: #e23744; --text: #1d2939; --muted: #667085; --line: #e4e7ec; --bg-soft: #f6f8fb; }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text); }
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--primary); }
+h1, h2, h3 { line-height: 1.2; color: var(--primary); }
+.container { width: min(1120px, 100% - 32px); margin-inline: auto; }
+.narrow { width: min(760px, 100% - 32px); }
+.section { padding: 40px 0; }
+.skip-link { position: absolute; left: -9999px; } .skip-link:focus { left: 16px; top: 16px; background: #fff; padding: 8px; z-index: 10; }
+.site-header { border-bottom: 1px solid var(--line); }
+.header__inner { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; padding: 14px 0; }
+.brand { font-weight: 800; text-decoration: none; } .brand__img { height: 48px; width: auto; }
+.nav { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; }
+.nav > li { position: relative; }
+.nav ul { display: none; position: absolute; z-index: 5; background: #fff; border: 1px solid var(--line); padding: 12px 16px; min-width: 260px; list-style: none; }
+.nav ul ul { position: static; display: block; border: 0; padding: 4px 0 8px 8px; min-width: 0; }
+.nav > li:hover > ul, .nav > li:focus-within > ul { display: block; }
+.header__phone { margin-left: auto; display: inline-flex; gap: 6px; align-items: center; }
+.icon { width: 1.1em; height: 1.1em; vertical-align: -0.15em; }
+.page-head { background: var(--bg-soft); padding: 32px 0; } .crumbs { font-size: .875rem; color: var(--muted); }
+.lead { font-size: 1.125rem; color: var(--muted); }
+.hero { padding: 56px 0; background: var(--bg-soft); }
+.btn { display: inline-block; padding: 12px 20px; border-radius: 8px; background: var(--accent); color: #fff; text-decoration: none; font-weight: 600; border: 0; cursor: pointer; font: inherit; }
+.btn--ghost { background: transparent; color: var(--primary); border: 1px solid var(--line); }
+.grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.card { border: 1px solid var(--line); border-radius: 12px; padding: 16px; } .card a { text-decoration: none; }
+.filters { display: flex; flex-wrap: wrap; gap: 12px; } .filters [aria-current] { font-weight: 700; }
+.hours { display: grid; grid-template-columns: auto 1fr; gap: 2px 16px; } .hours dd { margin: 0; }
+.map { width: 100%; height: 320px; border: 0; }
+.site-footer { margin-top: 40px; padding: 32px 0; background: var(--bg-soft); }
+.footer__grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.footer__bar { display: flex; flex-wrap: wrap; justify-content: space-between; font-size: .875rem; color: var(--muted); }
+/* Forms (app/views/partials/form.php) */
+.form__grid { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
+.field { grid-column: 1 / -1; display: grid; gap: 4px; } .field--half { grid-column: span 1; }
+.field input, .field select, .field textarea { font: inherit; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; width: 100%; }
+.field--check { grid-template-columns: auto 1fr; align-items: start; font-size: .875rem; }
+.hp { position: absolute; left: -9999px; }
+.form__actions { margin-top: 16px; } .form__success { padding: 12px; background: #ecfdf3; border-radius: 8px; margin-bottom: 12px; }
+.form-embed iframe { width: 100% !important; border: 0; }
+@media (max-width: 640px) { .form__grid { grid-template-columns: 1fr; } .field--half { grid-column: 1 / -1; } .header__phone { margin-left: 0; } }
+/* FAQ accordion (app/views/partials/faq.php + site.js) */
+.faq__item { border-bottom: 1px solid var(--line); }
+.faq__q { margin: 0; font-size: 1rem; }
+.faq__q button { width: 100%; text-align: left; padding: 14px 0; background: none; border: 0; font: inherit; font-weight: 600; cursor: pointer; color: inherit; }

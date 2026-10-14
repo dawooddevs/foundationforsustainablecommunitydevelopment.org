@@ -1,0 +1,10 @@
+/app/config.php
+/app/storage/*
+!/app/storage/.htaccess
+/uploads/*
+!/uploads/.htaccess
+!/uploads/index.html
+/node_modules/
+/dist/
+.DS_Store
+/package-lock.json

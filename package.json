@@ -1,0 +1,11 @@
+{
+  "name": "medical-center-website",
+  "private": true,
+  "description": "Medical center website — build tooling only (the site itself is plain PHP).",
+  "scripts": {
+    "build": "esbuild assets/css/site.css --minify --outfile=assets/css/site.min.css && esbuild assets/js/site.js --minify --target=es2017 --outfile=assets/js/site.min.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}
