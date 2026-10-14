@@ -194,44 +194,61 @@ if (require.main === module) (async () => {
   for (const p of pages) {
     for (const vp of WIDTHS) {
       const errRef = [], errCand = [];
-      const cand = await capture(browser, BASE + p.url, null, vp, errCand);
-      // 1. Strict: the untouched original. Differences may only be in the header/footer (§5 normalisation).
-      // A differing capture is taken once more (rendering races such as late glyph rasterisation);
-      // the retry count is reported so a flaky page is visible.
+      let cand = await capture(browser, BASE + p.url, null, vp, errCand);
       let retries = 0;
-      let ref = await capture(browser, REF_ORIGIN + '/', referenceHtml(p, null), vp, errRef);
-      let strict = compare(ref, cand);
-      const outsideOf = (st, rf) => { const boxes = cand.shellBoxes.concat(rf.shellBoxes); return st.rows.filter(([y0, y1]) => !boxes.some(([t, b]) => y0 >= t - 2 && y1 <= b + 2)); };
-      let outside = outsideOf(strict, ref);
-      if (outside.length || !strict.sizeSame) {
-        retries++;
-        ref = await capture(browser, REF_ORIGIN + '/', referenceHtml(p, null), vp, []);
-        strict = compare(ref, cand);
-        outside = outsideOf(strict, ref);
+      for (let attempt = 0; attempt < 2; attempt++) {
+        // 1. Strict: the untouched original. Differences may only be in the header/footer (§5 normalisation).
+        // A differing capture is taken once more (rendering races such as late glyph rasterisation);
+        // the retry count is reported so a flaky page is visible.
+        let ref = await capture(browser, REF_ORIGIN + '/', referenceHtml(p, null), vp, errRef);
+        let strict = compare(ref, cand);
+        const outsideOf = (st, rf) => { const boxes = cand.shellBoxes.concat(rf.shellBoxes); return st.rows.filter(([y0, y1]) => !boxes.some(([t, b]) => y0 >= t - 2 && y1 <= b + 2)); };
+        let outside = outsideOf(strict, ref);
+        if (outside.length || !strict.sizeSame) {
+          retries++;
+          ref = await capture(browser, REF_ORIGIN + '/', referenceHtml(p, null), vp, []);
+          strict = compare(ref, cand);
+          outside = outsideOf(strict, ref);
+        }
+        // 2. Normalised: the original with the canonical header/footer swapped in. Must be identical.
+        let norm = compare(await capture(browser, REF_ORIGIN + '/', referenceHtml(p, shells[p.slug]), vp, []), cand);
+        if (norm.n || !norm.sizeSame) {
+          retries++;
+          norm = compare(await capture(browser, REF_ORIGIN + '/', referenceHtml(p, shells[p.slug]), vp, []), cand);
+        }
+        if (attempt === 0 && (norm.n || !norm.sizeSame || outside.length)) {
+          // Still different: the candidate capture itself may be the odd one out; take it once more
+          retries++;
+          cand = await capture(browser, BASE + p.url, null, vp, []);
+          continue;
+        }
+        const fmt = (rows) => rows.map((x) => x[0] + '–' + x[1]);
+        const r = {
+          slug: p.slug, viewport: vp.name, refSize: [ref.width, ref.height], candSize: [cand.width, cand.height],
+          strictPixels: strict.n, strictRows: fmt(strict.rows), strictOutsideShell: fmt(outside),
+          normPixels: norm.n, normRows: fmt(norm.rows), normSizeSame: norm.sizeSame,
+          pass: norm.n === 0 && norm.sizeSame && outside.length === 0 && strict.sizeSame, retries, refErrors: errRef, candErrors: errCand,
+        };
+        const tag = p.slug + '-' + vp.name;
+        for (const f of fs.readdirSync(OUT)) if (f.startsWith(tag + '-')) fs.unlinkSync(path.join(OUT, f));
+        if (strict.n) fs.writeFileSync(path.join(OUT, tag + '-strict-side-by-side.png'), PNG.sync.write(sideBySide(ref, cand, strict.diff)));
+        if (norm.n) fs.writeFileSync(path.join(OUT, tag + '-normalised-side-by-side.png'), PNG.sync.write(sideBySide(ref, cand, norm.diff)));
+        console.log((r.pass ? 'PASS ' : 'FAIL ') + tag.padEnd(30) + ' normalised ' + norm.n + ' px' + (norm.n ? ' rows ' + r.normRows.slice(0, 6).join(', ') : '') + ' | strict ' + strict.n + ' px' + (strict.n ? (outside.length ? ' OUTSIDE shell: ' + r.strictOutsideShell.slice(0, 6).join(', ') : ' (all in header/footer)') : '') + (strict.sizeSame ? '' : ' size ' + ref.width + 'x' + ref.height + ' vs ' + cand.width + 'x' + cand.height) + (retries ? ' | re-captured ' + retries + 'x' : '') + (errCand.length ? ' | JS errors: ' + errCand.length : ''));
+        results.push(r);
+        break;
       }
-      // 2. Normalised: the original with the canonical header/footer swapped in. Must be identical.
-      let norm = compare(await capture(browser, REF_ORIGIN + '/', referenceHtml(p, shells[p.slug]), vp, []), cand);
-      if (norm.n || !norm.sizeSame) {
-        retries++;
-        norm = compare(await capture(browser, REF_ORIGIN + '/', referenceHtml(p, shells[p.slug]), vp, []), cand);
-      }
-      const fmt = (rows) => rows.map((x) => x[0] + '–' + x[1]);
-      const r = {
-        slug: p.slug, viewport: vp.name, refSize: [ref.width, ref.height], candSize: [cand.width, cand.height],
-        strictPixels: strict.n, strictRows: fmt(strict.rows), strictOutsideShell: fmt(outside),
-        normPixels: norm.n, normRows: fmt(norm.rows), normSizeSame: norm.sizeSame,
-        pass: norm.n === 0 && norm.sizeSame && outside.length === 0 && strict.sizeSame, retries, refErrors: errRef, candErrors: errCand,
-      };
-      const tag = p.slug + '-' + vp.name;
-      for (const f of fs.readdirSync(OUT)) if (f.startsWith(tag + '-')) fs.unlinkSync(path.join(OUT, f));
-      if (strict.n) fs.writeFileSync(path.join(OUT, tag + '-strict-side-by-side.png'), PNG.sync.write(sideBySide(ref, cand, strict.diff)));
-      if (norm.n) fs.writeFileSync(path.join(OUT, tag + '-normalised-side-by-side.png'), PNG.sync.write(sideBySide(ref, cand, norm.diff)));
-      console.log((r.pass ? 'PASS ' : 'FAIL ') + tag.padEnd(30) + ' normalised ' + norm.n + ' px' + (norm.n ? ' rows ' + r.normRows.slice(0, 6).join(', ') : '') + ' | strict ' + strict.n + ' px' + (strict.n ? (outside.length ? ' OUTSIDE shell: ' + r.strictOutsideShell.slice(0, 6).join(', ') : ' (all in header/footer)') : '') + (strict.sizeSame ? '' : ' size ' + ref.width + 'x' + ref.height + ' vs ' + cand.width + 'x' + cand.height) + (retries ? ' | re-captured ' + retries + 'x' : '') + (errCand.length ? ' | JS errors: ' + errCand.length : ''));
-      results.push(r);
     }
   }
   await browser.close();
-  fs.writeFileSync(path.join(OUT, 'report.json'), JSON.stringify(results, null, 2));
+  // Re-running some pages updates their rows in an existing report
+  const prevFile = path.join(OUT, 'report.json');
+  if (only.length && fs.existsSync(prevFile)) {
+    const prev = JSON.parse(fs.readFileSync(prevFile, 'utf8')).filter((x) => !only.includes(x.slug));
+    results.splice(0, 0, ...prev);
+    const order = manifest.pages.map((x) => x.slug);
+    results.sort((a, b) => order.indexOf(a.slug) - order.indexOf(b.slug) || (a.viewport === 'desktop' ? -1 : 1));
+  }
+  fs.writeFileSync(prevFile, JSON.stringify(results, null, 2));
   const md = ['# Visual check', '', 'Generated ' + new Date().toISOString() + ' against ' + BASE + '.', '',
     '- **Normalised**: the original page with the canonical header/footer swapped in, versus the CMS page. Must be 0.',
     '- **Strict**: the untouched original versus the CMS page. Differences are allowed only inside the header/footer (BRIEF §5).', '',

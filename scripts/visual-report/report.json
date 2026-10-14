@@ -10,13 +10,18 @@
       1440,
       10177
     ],
-    "diffPixels": 4360,
-    "rows": [
+    "strictPixels": 4360,
+    "strictRows": [
       "9418–9456",
       "9501–9507",
       "10147–10158"
     ],
-    "pass": false,
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
     "refErrors": [],
     "candErrors": []
   },
@@ -31,13 +36,622 @@
       390,
       18769
     ],
-    "diffPixels": 749,
-    "rows": [
+    "strictPixels": 749,
+    "strictRows": [
       "17107–17111",
       "17140–17144",
       "18739–18750"
     ],
-    "pass": false,
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "changing-lives",
+    "viewport": "desktop",
+    "refSize": [
+      1440,
+      8898
+    ],
+    "candSize": [
+      1440,
+      8898
+    ],
+    "strictPixels": 4346,
+    "strictRows": [
+      "8142–8180",
+      "8222–8228",
+      "8868–8879"
+    ],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "changing-lives",
+    "viewport": "mobile",
+    "refSize": [
+      390,
+      12428
+    ],
+    "candSize": [
+      390,
+      12428
+    ],
+    "strictPixels": 746,
+    "strictRows": [
+      "10769–10773",
+      "10801–10805",
+      "12398–12409"
+    ],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "clean-energy",
+    "viewport": "desktop",
+    "refSize": [
+      1440,
+      12999
+    ],
+    "candSize": [
+      1440,
+      12999
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "clean-energy",
+    "viewport": "mobile",
+    "refSize": [
+      390,
+      22013
+    ],
+    "candSize": [
+      390,
+      22013
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "contact",
+    "viewport": "desktop",
+    "refSize": [
+      1440,
+      5417
+    ],
+    "candSize": [
+      1440,
+      5417
+    ],
+    "strictPixels": 4522,
+    "strictRows": [
+      "4658–4696",
+      "4740–4746",
+      "5387–5398"
+    ],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "contact",
+    "viewport": "mobile",
+    "refSize": [
+      390,
+      8976
+    ],
+    "candSize": [
+      390,
+      8976
+    ],
+    "strictPixels": 743,
+    "strictRows": [
+      "7311–7315",
+      "7345–7349",
+      "8946–8957"
+    ],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "dilip-limaye",
+    "viewport": "desktop",
+    "refSize": [
+      1440,
+      9513
+    ],
+    "candSize": [
+      1440,
+      9513
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "dilip-limaye",
+    "viewport": "mobile",
+    "refSize": [
+      390,
+      17703
+    ],
+    "candSize": [
+      390,
+      17703
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "eye-care",
+    "viewport": "desktop",
+    "refSize": [
+      1440,
+      11035
+    ],
+    "candSize": [
+      1440,
+      11035
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "eye-care",
+    "viewport": "mobile",
+    "refSize": [
+      390,
+      16217
+    ],
+    "candSize": [
+      390,
+      16217
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "global-benefits",
+    "viewport": "desktop",
+    "refSize": [
+      1440,
+      7770
+    ],
+    "candSize": [
+      1440,
+      7770
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "global-benefits",
+    "viewport": "mobile",
+    "refSize": [
+      390,
+      13717
+    ],
+    "candSize": [
+      390,
+      13717
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "home",
+    "viewport": "desktop",
+    "refSize": [
+      1440,
+      17935
+    ],
+    "candSize": [
+      1440,
+      17935
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "home",
+    "viewport": "mobile",
+    "refSize": [
+      390,
+      30253
+    ],
+    "candSize": [
+      390,
+      30253
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 1,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "leadership",
+    "viewport": "desktop",
+    "refSize": [
+      1440,
+      6389
+    ],
+    "candSize": [
+      1440,
+      6389
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "leadership",
+    "viewport": "mobile",
+    "refSize": [
+      390,
+      13199
+    ],
+    "candSize": [
+      390,
+      13199
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "our-programs",
+    "viewport": "desktop",
+    "refSize": [
+      1440,
+      8897
+    ],
+    "candSize": [
+      1440,
+      8897
+    ],
+    "strictPixels": 4688,
+    "strictRows": [
+      "8211–8244",
+      "8282–8288",
+      "8869–8878"
+    ],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "our-programs",
+    "viewport": "mobile",
+    "refSize": [
+      390,
+      16454
+    ],
+    "candSize": [
+      390,
+      16454
+    ],
+    "strictPixels": 430,
+    "strictRows": [
+      "14937–14941",
+      "14968–14972",
+      "16427–16436"
+    ],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "privacy-policy-2",
+    "viewport": "desktop",
+    "refSize": [
+      1440,
+      5120
+    ],
+    "candSize": [
+      1440,
+      5120
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "privacy-policy-2",
+    "viewport": "mobile",
+    "refSize": [
+      390,
+      7802
+    ],
+    "candSize": [
+      390,
+      7802
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "resources",
+    "viewport": "desktop",
+    "refSize": [
+      1440,
+      7991
+    ],
+    "candSize": [
+      1440,
+      7991
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "resources",
+    "viewport": "mobile",
+    "refSize": [
+      390,
+      14931
+    ],
+    "candSize": [
+      390,
+      14931
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "strategic-partners",
+    "viewport": "desktop",
+    "refSize": [
+      1440,
+      9365
+    ],
+    "candSize": [
+      1440,
+      9365
+    ],
+    "strictPixels": 4928,
+    "strictRows": [
+      "8623–8661",
+      "8704–8710",
+      "9335–9346"
+    ],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "strategic-partners",
+    "viewport": "mobile",
+    "refSize": [
+      390,
+      16696
+    ],
+    "candSize": [
+      390,
+      16696
+    ],
+    "strictPixels": 754,
+    "strictRows": [
+      "15046–15050",
+      "15079–15083",
+      "16666–16677"
+    ],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "terms-of-service",
+    "viewport": "desktop",
+    "refSize": [
+      1440,
+      10290
+    ],
+    "candSize": [
+      1440,
+      10290
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "terms-of-service",
+    "viewport": "mobile",
+    "refSize": [
+      390,
+      15432
+    ],
+    "candSize": [
+      390,
+      15432
+    ],
+    "strictPixels": 0,
+    "strictRows": [],
+    "strictOutsideShell": [],
+    "normPixels": 0,
+    "normRows": [],
+    "normSizeSame": true,
+    "pass": true,
+    "retries": 0,
     "refErrors": [],
     "candErrors": []
   }
