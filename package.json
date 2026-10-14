@@ -1,11 +1,16 @@
 {
-  "name": "medical-center-website",
+  "name": "fscd-website",
   "private": true,
-  "description": "Medical center website — build tooling only (the site itself is plain PHP).",
+  "description": "FSCD website — build and check tooling only (the site itself is plain PHP).",
   "scripts": {
-    "build": "esbuild assets/css/site.css --minify --outfile=assets/css/site.min.css && esbuild assets/js/site.js --minify --target=es2017 --outfile=assets/js/site.min.js"
+    "build": "esbuild assets/css/site.css --minify --outfile=assets/css/site.min.css && esbuild assets/js/site.js --minify --target=es2017 --outfile=assets/js/site.min.js",
+    "visual-check": "node scripts/visual-check.js",
+    "behaviour-check": "node scripts/behaviour-check.js"
   },
   "devDependencies": {
-    "esbuild": "^0.28.2"
+    "esbuild": "^0.28.2",
+    "pixelmatch": "^5.3.0",
+    "playwright": "^1.56.1",
+    "pngjs": "^7.0.0"
   }
 }

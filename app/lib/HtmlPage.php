@@ -135,6 +135,16 @@ final class HtmlPage
         return array_keys($bad);
     }
 
+    /** Keep the latest 30 revisions of a page's content. */
+    public static function saveRevision(int $pageId, string $content, int $userId): void
+    {
+        DB::insert('page_revisions', ['page_id' => $pageId, 'content' => $content, 'user_id' => $userId ?: null, 'created_at' => now()]);
+        $keep = DB::all('SELECT id FROM page_revisions WHERE page_id = ? ORDER BY id DESC LIMIT 30', [$pageId]);
+        if (count($keep) === 30) {
+            DB::q('DELETE FROM page_revisions WHERE page_id = ? AND id < ?', [$pageId, (int)end($keep)['id']]);
+        }
+    }
+
     /**
      * Locate a master-shell block (<div … id="$id">…</div>) by matching nested divs, skipping
      * the contents of scripts, styles and comments. Returns [offset, length] or null.

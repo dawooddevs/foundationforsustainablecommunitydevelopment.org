@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "about-us",
+    "viewport": "desktop",
+    "refSize": [
+      1440,
+      10177
+    ],
+    "candSize": [
+      1440,
+      10177
+    ],
+    "diffPixels": 4360,
+    "rows": [
+      "9418–9456",
+      "9501–9507",
+      "10147–10158"
+    ],
+    "pass": false,
+    "refErrors": [],
+    "candErrors": []
+  },
+  {
+    "slug": "about-us",
+    "viewport": "mobile",
+    "refSize": [
+      390,
+      18769
+    ],
+    "candSize": [
+      390,
+      18769
+    ],
+    "diffPixels": 749,
+    "rows": [
+      "17107–17111",
+      "17140–17144",
+      "18739–18750"
+    ],
+    "pass": false,
+    "refErrors": [],
+    "candErrors": []
+  }
+]

@@ -30,6 +30,7 @@ final class Resources
 
         return [
             'services' => [
+                'hidden' => true, // not used by the FSCD site (code kept)
                 'table' => 'services', 'label' => 'Treatments', 'singular' => 'Treatment', 'icon' => 'activity',
                 'titleKey' => 'title', 'slug' => true, 'url' => Content::SERVICE_BASE . '/{slug}/', 'orderable' => true, 'review' => true,
                 'search' => ['title', 'slug', 'excerpt'],
@@ -69,6 +70,7 @@ final class Resources
             ],
 
             'providers' => [
+                'hidden' => true, // not used by the FSCD site (code kept)
                 'table' => 'providers', 'label' => 'Providers', 'singular' => 'Provider', 'icon' => 'users',
                 'titleKey' => 'name', 'slug' => true, 'url' => Content::PROVIDER_BASE . '/{slug}/', 'orderable' => true, 'review' => true,
                 'search' => ['name', 'title', 'slug'],
@@ -127,6 +129,7 @@ final class Resources
                         ['value' => 'treatments', 'label' => 'Services index'],
                         ['value' => 'appointment', 'label' => 'Appointment'], ['value' => 'contact', 'label' => 'Contact'],
                         ['value' => 'sitemap', 'label' => 'Sitemap'],
+                        ['value' => 'html', 'label' => 'Raw HTML page (administrators only)'],
                     ]],
                     ['key' => 'image', 'label' => 'Hero image', 'type' => 'image', 'side' => true],
                     ['key' => 'show_cta', 'label' => 'Show appointment CTA', 'type' => 'toggle', 'side' => true, 'default' => 1],
@@ -135,6 +138,7 @@ final class Resources
             ],
 
             'testimonials' => [
+                'hidden' => true, // not used by the FSCD site (code kept)
                 'table' => 'testimonials', 'label' => 'Testimonials', 'singular' => 'Testimonial', 'icon' => 'quote',
                 'titleKey' => 'name', 'slug' => false, 'orderable' => true,
                 'search' => ['name', 'content'],
@@ -157,6 +161,7 @@ final class Resources
             ],
 
             'faqs' => [
+                'hidden' => true, // not used by the FSCD site (code kept)
                 'table' => 'faqs', 'label' => 'FAQs', 'singular' => 'FAQ', 'icon' => 'message-square',
                 'titleKey' => 'question', 'slug' => false, 'orderable' => true,
                 'search' => ['question', 'answer'],
@@ -176,6 +181,7 @@ final class Resources
             ],
 
             'locations' => [
+                'hidden' => true, // not used by the FSCD site (code kept)
                 'table' => 'locations', 'label' => 'Locations', 'singular' => 'Location', 'icon' => 'map-pin',
                 'titleKey' => 'name', 'slug' => true, 'url' => 'locations/#{slug}', 'orderable' => true,
                 'search' => ['name', 'address', 'city'],
@@ -230,6 +236,15 @@ final class Resources
         ];
     }
 
+    /** The built-in page → active menu item map, for the settings help text. */
+    private static function navDefaults(): string
+    {
+        if (!class_exists('HtmlPage')) {
+            require_once APP . '/lib/HtmlPage.php';
+        }
+        return implode(', ', array_map(fn($k, $v) => "$k = $v", array_keys(HtmlPage::NAV_ACTIVE), HtmlPage::NAV_ACTIVE)) . '; others none.';
+    }
+
     /** [key => label] to the [['value'=>…, 'label'=>…]] option format used by the dashboard. */
     private static function options(array $map): array
     {
@@ -276,7 +291,12 @@ final class Resources
                 ['key' => 'color_accent', 'label' => 'Accent (sky blue, buttons)', 'type' => 'color', 'third' => true],
                 ['key' => 'color_highlight', 'label' => 'Highlight', 'type' => 'color', 'third' => true],
             ]],
-            'homepage' => ['label' => 'Homepage', 'icon' => 'heart-pulse', 'fields' => [
+            'header_footer' => ['label' => 'Header & Footer', 'icon' => 'code', 'fields' => [
+                ['key' => 'site_header_html', 'label' => 'Site header HTML', 'type' => 'code', 'rows' => 18, 'help' => 'Shared by every raw-HTML page through the {{header}} token. The current page\'s menu item gets the class fscd-active automatically. Use {{media:file-name.png}} for images.'],
+                ['key' => 'site_footer_html', 'label' => 'Site footer HTML', 'type' => 'code', 'rows' => 18, 'help' => 'Shared by every raw-HTML page through the {{footer}} token.'],
+                ['key' => 'nav_active_map', 'label' => 'Active menu item per page', 'type' => 'lines', 'rows' => 5, 'placeholder' => "resources = none\nnew-page-slug = Programs", 'help' => 'Optional overrides, one "page-slug = Menu label" per line (Home, About, Programs, Impact, Partners, Contact, or none). Built-in: ' . self::navDefaults()],
+            ]],
+            'homepage' => ['label' => 'Homepage', 'icon' => 'heart-pulse', 'hidden' => true, 'fields' => [
                 ['key' => 'hero_line1', 'label' => 'Headline — line 1', 'type' => 'text', 'half' => true],
                 ['key' => 'hero_line2', 'label' => 'Headline — line 2 (accent)', 'type' => 'text', 'half' => true],
                 ['key' => 'hero_copy', 'label' => 'Hero supporting copy', 'type' => 'textarea', 'rows' => 3],
@@ -301,7 +321,7 @@ final class Resources
                 ['key' => 'head_scripts', 'label' => 'Extra <head> code', 'type' => 'code', 'help' => 'Tracking pixels, verification tags, etc.'],
                 ['key' => 'body_scripts', 'label' => 'Extra code before </body>', 'type' => 'code'],
             ]],
-            'forms' => ['label' => 'Patient Forms', 'icon' => 'file-text', 'fields' => [
+            'forms' => ['label' => 'Patient Forms', 'icon' => 'file-text', 'hidden' => true, 'fields' => [
                 ['key' => 'form_new_patient_en', 'label' => 'New Patient Forms — English', 'type' => 'file', 'help' => 'Optional. Leave empty to use a PDF in the Media Library named new-patient-form-english.pdf (and likewise for the others). Forms with no file are hidden.'],
                 ['key' => 'form_new_patient_es', 'label' => 'New Patient Forms — Spanish', 'type' => 'file'],
                 ['key' => 'form_accident_en', 'label' => 'Accident Forms — English', 'type' => 'file'],
@@ -413,7 +433,9 @@ final class Resources
                 $out[$k] = $row[$k];
             }
         }
-        if (!empty($def['url']) && !empty($row['slug'])) {
+        if (($def['table'] ?? '') === 'pages' && ($row['slug'] ?? '') === 'home') {
+            $out['_url'] = url(''); // the homepage page is served at /
+        } elseif (!empty($def['url']) && !empty($row['slug'])) {
             $out['_url'] = url(str_replace('{slug}', $row['slug'], $def['url']));
         } elseif (($def['table'] ?? '') === 'pages') {
             $out['_url'] = url($row['slug'] . '/');

@@ -165,7 +165,7 @@ final class FscdImport
             }
             if ($existing) {
                 if ((string)$existing['content'] !== $content) {
-                    self::saveRevision((int)$existing['id'], (string)$existing['content'], $this->userId);
+                    HtmlPage::saveRevision((int)$existing['id'], (string)$existing['content'], $this->userId);
                 }
                 DB::update('pages', $row, 'id = ?', [$existing['id']]);
                 $this->log[] = "page $slug: updated";
@@ -186,16 +186,6 @@ final class FscdImport
                 DB::insert('redirects', ['source' => $from, 'target' => $to, 'code' => 301, 'hits' => 0, 'note' => 'FSCD: old WordPress URL', 'created_at' => now(), 'updated_at' => now()]);
                 $this->log[] = "redirect $from → $to";
             }
-        }
-    }
-
-    /** Keep the latest 30 revisions of a page's content. */
-    public static function saveRevision(int $pageId, string $content, int $userId): void
-    {
-        DB::insert('page_revisions', ['page_id' => $pageId, 'content' => $content, 'user_id' => $userId ?: null, 'created_at' => now()]);
-        $keep = DB::all('SELECT id FROM page_revisions WHERE page_id = ? ORDER BY id DESC LIMIT 30', [$pageId]);
-        if (count($keep) === 30) {
-            DB::q('DELETE FROM page_revisions WHERE page_id = ? AND id < ?', [$pageId, (int)end($keep)['id']]);
         }
     }
 

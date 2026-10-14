@@ -50,6 +50,8 @@ jobs:
           node-version: '20'
 
       - name: Build minified assets
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1' # Playwright is only for the local visual check
         run: npm install --no-audit --no-fund && npm run build
 
       - name: Prepare SSH key

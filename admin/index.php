@@ -42,6 +42,7 @@ $accent2 = $accent === '#e23744' ? '#ff6b5b' : "color-mix(in srgb, $accent 68%, 
         'csrf' => Auth::csrf(),
         'version' => VERSION,
         'siteName' => setting('site_short_name'),
+        'tz' => date('P'), // server timezone (app/bootstrap.php), for showing times correctly
     ], JSON_UNESCAPED_SLASHES | JSON_HEX_TAG) ?>;
   </script>
   <script src="<?= e($v('admin.js')) ?>" defer></script>

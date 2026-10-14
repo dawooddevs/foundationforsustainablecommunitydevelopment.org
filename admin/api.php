@@ -5,6 +5,8 @@
  */
 require dirname(__DIR__) . '/app/bootstrap.php';
 require APP . '/lib/Resources.php';
+require APP . '/lib/Forms.php';
+require APP . '/lib/HtmlPage.php';
 
 if (!is_installed()) {
     json_out(['ok' => false, 'error' => 'Not installed'], 503);
@@ -44,6 +46,25 @@ function need(string $cap): array
     return $u;
 }
 
+/** Raw HTML pages, the header/footer and code settings are for Administrators only (BRIEF §8). */
+function is_admin(): bool
+{
+    $u = Auth::user();
+    return $u && $u['role'] === 'admin';
+}
+
+function is_html_page(?array $row, array $data = []): bool
+{
+    return ($data['template'] ?? '') === 'html' || ($row['template'] ?? '') === 'html';
+}
+
+function need_admin_for_html(?array $row, array $data = []): void
+{
+    if (is_html_page($row, $data) && !is_admin()) {
+        fail('Only administrators can change raw-HTML pages.', 403);
+    }
+}
+
 function resource(string $type): array
 {
     $def = Resources::get($type);
@@ -57,7 +78,7 @@ function resource(string $type): array
 if ($method === 'POST' && $route !== 'auth.login' && !Auth::checkCsrf($_SERVER['HTTP_X_CSRF_TOKEN'] ?? ($in['_csrf'] ?? null))) {
     fail('Security token expired. Please reload the page.', 419);
 }
-if ($method !== 'POST' && !in_array($route, ['auth.me', 'schema', 'dashboard', 'res.list', 'res.get', 'res.options', 'media.list', 'submissions.list', 'submissions.get', 'submissions.export', 'users.list', 'settings.get', 'activity.list', 'search', 'system.info', 'backup.export'], true)) {
+if ($method !== 'POST' && !in_array($route, ['auth.me', 'schema', 'dashboard', 'page.revisions', 'page.revision', 'res.list', 'res.get', 'res.options', 'media.list', 'submissions.list', 'submissions.get', 'submissions.export', 'users.list', 'settings.get', 'activity.list', 'search', 'system.info', 'backup.export'], true)) {
     fail('Method not allowed.', 405);
 }
 
@@ -121,22 +142,29 @@ try {
             $since7 = date('Y-m-d H:i:s', strtotime('-7 days'));
             $review = [];
             foreach (['services' => 'title', 'providers' => 'name', 'pages' => 'title'] as $t => $col) {
+                if (!empty(Resources::get($t)['hidden'])) continue;
                 foreach (DB::all("SELECT id, $col AS title, status FROM $t WHERE needs_review = 1 ORDER BY sort_order, id LIMIT 50") as $r) {
                     $review[] = ['type' => $t, 'id' => (int)$r['id'], 'title' => $r['title'], 'status' => $r['status']];
                 }
             }
             $health = [];
-            $noPhoto = (int)DB::val("SELECT COUNT(*) FROM providers WHERE status='published' AND (photo = '' OR photo IS NULL)");
-            if ($noPhoto) $health[] = ['level' => 'warn', 'text' => "$noPhoto provider profile(s) have no photo", 'link' => '#/providers'];
-            $noImg = (int)DB::val("SELECT COUNT(*) FROM services WHERE status='published' AND (image = '' OR image IS NULL)");
-            if ($noImg) $health[] = ['level' => 'info', 'text' => "$noImg treatment(s) use the placeholder image", 'link' => '#/services'];
-            $emptyT = (int)DB::val("SELECT COUNT(*) FROM testimonials WHERE content IS NULL OR content = ''");
-            if ($emptyT) $health[] = ['level' => 'warn', 'text' => "$emptyT testimonial(s) need their original text", 'link' => '#/testimonials'];
-            $noVideo = array_filter(Content::videos(), fn($v) => $v['source'] === 'missing');
-            if ($noVideo) $health[] = ['level' => 'warn', 'text' => count($noVideo) . ' video(s) not found in the Media Library: ' . implode(', ', array_map(fn($v) => $v['file'], $noVideo)), 'link' => '#/media'];
-            if (!setting('ghl_appointment_embed') && !setting('ghl_webhook_url')) $health[] = ['level' => 'warn', 'text' => 'GoHighLevel is not connected (built-in forms are active)', 'link' => '#/settings/integrations'];
+            // Raw-HTML pages: tokens that would show as text, and files still loaded from the old WordPress site
+            foreach (DB::all("SELECT id, title, content FROM pages WHERE template = 'html'") as $pg) {
+                $bad = HtmlPage::unknownTokens((string)$pg['content']);
+                if ($bad) $health[] = ['level' => 'warn', 'text' => '"' . $pg['title'] . '" has unknown or missing tokens: ' . implode(', ', array_slice($bad, 0, 5)), 'link' => '#/pages/' . $pg['id']];
+                if (preg_match('~(?:src|href)="[^"]*/wp-content/uploads/fscd/fscd-eye\.(?:css|js)~', (string)$pg['content'])) {
+                    $health[] = ['level' => 'warn', 'text' => '"' . $pg['title'] . '" still links fscd-eye.css/js from the old site: add the files to app/seed/fscd/eye-care/ and run php app/cli/import-fscd.php --force', 'link' => '#/pages/' . $pg['id']];
+                }
+            }
+            foreach (['site_header_html' => 'header', 'site_footer_html' => 'footer'] as $k => $label) {
+                if (trim((string)setting($k)) === '') $health[] = ['level' => 'warn', 'text' => "The shared $label is empty", 'link' => '#/settings/header_footer'];
+                elseif ($bad = HtmlPage::unknownTokens((string)setting($k))) $health[] = ['level' => 'warn', 'text' => "The shared $label has unknown or missing tokens: " . implode(', ', $bad), 'link' => '#/settings/header_footer'];
+            }
+            foreach (json_list((string)setting('fscd_import_warnings')) as $w) {
+                $health[] = ['level' => 'warn', 'text' => 'Import: ' . $w, 'link' => '#/pages'];
+            }
+            if (!trim((string)setting('notify_email'))) $health[] = ['level' => 'warn', 'text' => 'No form notification email is set', 'link' => '#/settings/general'];
             if (setting('seo_noindex') === '1') $health[] = ['level' => 'info', 'text' => 'Search engines are blocked (staging mode)', 'link' => '#/settings/seo'];
-            if (!setting('social_facebook') && !setting('social_instagram')) $health[] = ['level' => 'info', 'text' => 'Social media links are not set', 'link' => '#/settings/social'];
 
             $data = [
                 'counts' => [
@@ -201,9 +229,12 @@ try {
                 }
                 if (isset($r['needs_review'])) $item['_review'] = (int)$r['needs_review'] === 1;
                 if (isset($r['is_system'])) $item['_system'] = (int)$r['is_system'] === 1;
-                if (!empty($def['url']) && !empty($r['slug'])) {
+                if ($t === 'pages' && $r['slug'] === 'home') {
+                    $item['_url'] = url('');
+                } elseif (!empty($def['url']) && !empty($r['slug'])) {
                     $item['_url'] = url(str_replace('{slug}', $r['slug'], $def['url']));
                 }
+                if ($t === 'pages') $item['_html'] = ($r['template'] ?? '') === 'html';
                 if (isset($item['photo'])) $item['photo'] = $item['photo'] ? media_url($item['photo']) : '';
                 $items[] = $item;
             }
@@ -236,6 +267,9 @@ try {
             $existing = $id ? DB::one("SELECT * FROM $t WHERE id = ?", [$id]) : null;
             if ($id && !$existing) fail('This item no longer exists.', 404);
             $canPublish = Auth::can('content.publish');
+            if ($type === 'pages') {
+                need_admin_for_html($existing, $data);
+            }
             if (!$canPublish && $existing && ($existing['status'] ?? '') === 'published') {
                 fail('Only editors and administrators can change published content. Ask an editor to unpublish it first.', 403);
             }
@@ -256,6 +290,19 @@ try {
             }
             if ($errors) {
                 json_out(['ok' => false, 'error' => reset($errors), 'fields' => $errors], 422);
+            }
+            // Raw-HTML pages store their HTML as typed (Administrators only, checked above)
+            $notice = '';
+            if ($type === 'pages' && is_html_page($existing, $row) && array_key_exists('content', $data)) {
+                $row['content'] = str_replace("\r\n", "\n", (string)$data['content']);
+                [$fixed, $replaced] = HtmlPage::replaceShells($row['content']);
+                if ($replaced) {
+                    $row['content'] = $fixed;
+                    $notice = 'The pasted ' . implode(' and ', $replaced) . ' markup was replaced with ' . implode(' and ', array_map(fn($x) => '{{' . $x . '}}', $replaced)) . '. Edit the shared version in Settings → Header & Footer.';
+                }
+            }
+            if ($type === 'pages' && $existing && isset($row['content']) && (string)$existing['content'] !== (string)$row['content']) {
+                HtmlPage::saveRevision($id, (string)$existing['content'], (int)$u['id']);
             }
             if (isset($row['status']) && !$canPublish) {
                 $row['status'] = 'draft';
@@ -300,7 +347,32 @@ try {
                 $id = DB::insert($t, $row);
                 Auth::log('created', $type, $id, (string)($row[$def['titleKey']] ?? ''));
             }
-            ok(Resources::present($def, DB::one("SELECT * FROM $t WHERE id = ?", [$id])));
+            ok(Resources::present($def, DB::one("SELECT * FROM $t WHERE id = ?", [$id])) + ($notice !== '' ? ['_notice' => $notice] : []));
+
+        // ------------------------------------------------------------ Page revisions (raw HTML needs an undo)
+        case 'page.revisions':
+            need('content.view');
+            $rows = DB::all('SELECT r.id, r.created_at, LENGTH(r.content) AS size, u.name AS user_name, u.username FROM page_revisions r LEFT JOIN users u ON u.id = r.user_id WHERE r.page_id = ? ORDER BY r.id DESC LIMIT 30', [(int)($in['id'] ?? 0)]);
+            ok(array_map(fn($r) => ['id' => (int)$r['id'], 'created_at' => $r['created_at'], 'size' => (int)$r['size'], 'user' => $r['user_name'] ?: ($r['username'] ?: 'Import')], $rows));
+
+        case 'page.revision':
+            need('content.view');
+            $rev = DB::one('SELECT * FROM page_revisions WHERE id = ?', [(int)($in['id'] ?? 0)]);
+            if (!$rev) fail('Revision not found.', 404);
+            ok(['id' => (int)$rev['id'], 'page_id' => (int)$rev['page_id'], 'content' => $rev['content'], 'created_at' => $rev['created_at']]);
+
+        case 'page.restore':
+            $u = need('content.edit');
+            $rev = DB::one('SELECT * FROM page_revisions WHERE id = ?', [(int)($in['id'] ?? 0)]);
+            if (!$rev) fail('Revision not found.', 404);
+            $pg = DB::one('SELECT * FROM pages WHERE id = ?', [(int)$rev['page_id']]);
+            if (!$pg) fail('Page not found.', 404);
+            need_admin_for_html($pg);
+            if (!Auth::can('content.publish') && $pg['status'] === 'published') fail('Only editors and administrators can change published content.', 403);
+            HtmlPage::saveRevision((int)$pg['id'], (string)$pg['content'], (int)$u['id']);
+            DB::update('pages', ['content' => $rev['content'], 'updated_at' => now(), 'updated_by' => (int)$u['id']], 'id = ?', [$pg['id']]);
+            Auth::log('restored revision', 'pages', (int)$pg['id'], $pg['title']);
+            ok(['restored' => (int)$rev['id']]);
 
         case 'res.delete':
             need('content.delete');
@@ -313,6 +385,7 @@ try {
                 $row = DB::one("SELECT * FROM {$def['table']} WHERE id = ?", [$id]);
                 if (!$row) continue;
                 if (!empty($row['is_system'])) fail('"' . $row[$def['titleKey']] . '" is a core page and cannot be deleted. Set it to Draft instead.', 422);
+                if ($type === 'pages') need_admin_for_html($row);
                 DB::delete($def['table'], 'id = ?', [$id]);
                 Auth::log('deleted', $type, $id, (string)$row[$def['titleKey']]);
                 $n++;
@@ -324,6 +397,11 @@ try {
             $type = (string)($in['type'] ?? '');
             $def = resource($type);
             $status = ($in['status'] ?? '') === 'published' ? 'published' : 'draft';
+            if ($type === 'pages') {
+                foreach (array_map('intval', (array)($in['ids'] ?? [])) as $id) {
+                    need_admin_for_html(DB::one('SELECT template FROM pages WHERE id = ?', [$id]));
+                }
+            }
             foreach (array_map('intval', (array)($in['ids'] ?? [])) as $id) {
                 DB::update($def['table'], ['status' => $status, 'updated_at' => now()], 'id = ?', [$id]);
                 Auth::log($status === 'published' ? 'published' : 'unpublished', $type, $id, (string)DB::val("SELECT {$def['titleKey']} FROM {$def['table']} WHERE id = ?", [$id]));
@@ -347,6 +425,7 @@ try {
             $def = resource($type);
             $row = DB::one("SELECT * FROM {$def['table']} WHERE id = ?", [(int)($in['id'] ?? 0)]);
             if (!$row) fail('Not found.', 404);
+            if ($type === 'pages') need_admin_for_html($row);
             unset($row['id']);
             $row[$def['titleKey']] .= ' (copy)';
             if (!empty($def['slug'])) {
@@ -471,7 +550,7 @@ try {
             $total = (int)DB::val('SELECT COUNT(*) FROM submissions WHERE ' . implode(' AND ', $where), $p);
             $rows = DB::all('SELECT * FROM submissions WHERE ' . implode(' AND ', $where) . " ORDER BY id DESC LIMIT $per OFFSET " . (($page - 1) * $per), $p);
             ok(['items' => array_map('present_submission', $rows), 'total' => $total, 'page' => $page, 'pages' => (int)ceil($total / $per),
-                'counts' => ['new' => (int)DB::val("SELECT COUNT(*) FROM submissions WHERE status='new'")], 'types' => Forms_types()]);
+                'counts' => ['new' => (int)DB::val("SELECT COUNT(*) FROM submissions WHERE status='new'")], 'types' => used_form_types()]);
 
         case 'submissions.get':
             need('submissions.view');
@@ -632,6 +711,7 @@ try {
             foreach (Resources::settings() as $tab) {
                 foreach ($tab['fields'] as $f) {
                     if (array_key_exists($f['key'], $d)) {
+                        if ($f['type'] === 'code' && !is_admin()) fail('Only administrators can change code settings.', 403);
                         $v = Resources::clean($f, $d[$f['key']]);
                         if ($f['type'] === 'color' && $v === '') continue;
                         Settings::set($f['key'], (string)$v);
@@ -657,6 +737,7 @@ try {
             if (mb_strlen($q) >= 2) {
                 foreach (['services', 'providers', 'pages', 'testimonials', 'faqs', 'locations'] as $type) {
                     $def = Resources::get($type);
+                    if (!empty($def['hidden'])) continue;
                     $tk = $def['titleKey'];
                     foreach (DB::all("SELECT id, $tk AS title FROM {$def['table']} WHERE $tk LIKE ? ORDER BY $tk LIMIT 5", ["%$q%"]) as $r) {
                         $out[] = ['type' => $type, 'label' => $def['singular'], 'id' => (int)$r['id'], 'title' => $r['title'], 'icon' => $def['icon']];
@@ -712,7 +793,14 @@ try {
 
 function Forms_types(): array
 {
-    return ['appointment' => 'Appointment Request', 'contact' => 'Contact Message', 'benefits' => 'Benefits Check'];
+    return Forms::TYPES;
+}
+
+/** Form types for the inbox filter: the site's own forms plus any type that has submissions. */
+function used_form_types(): array
+{
+    $keep = array_merge(array_keys(Forms::OPTIONS), array_column(DB::all('SELECT DISTINCT form FROM submissions'), 'form'));
+    return array_intersect_key(Forms::TYPES, array_flip($keep));
 }
 
 function present_submission(array $r): array

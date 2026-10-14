@@ -89,14 +89,16 @@
   function $$(s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); }
   function el(html) { var t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; }
   function can(cap) { var c = (S.user && S.user.caps) || []; return c.indexOf('*') > -1 || c.indexOf(cap) > -1; }
+  function isAdmin() { return !!(S.user && S.user.role === 'admin'); }
+  function shown(k) { var r = S.schema && S.schema.resources[k]; return !!r && !r.hidden; }
   // Field previews: bust the year-long image cache once per dashboard load so replaced files show
   var MEDIA_BUST = Date.now().toString(36);
   function mediaUrl(p) { if (!p) return ''; if (/^(https?:)?\/\//.test(p)) return p; p = String(p).replace(/^\/+/, ''); return A.base + p + (/^uploads\//.test(p) && p.indexOf('?') < 0 ? '?v=' + MEDIA_BUST : ''); }
   function debounce(fn, ms) { var t; return function () { var a = arguments, s = this; clearTimeout(t); t = setTimeout(function () { fn.apply(s, a); }, ms); }; }
   function slugify(s) { return String(s || '').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
   function bytes(n) { n = +n || 0; if (n < 1024) return n + ' B'; if (n < 1048576) return (n / 1024).toFixed(0) + ' KB'; if (n < 1073741824) return (n / 1048576).toFixed(1) + ' MB'; return (n / 1073741824).toFixed(2) + ' GB'; }
-  // Server timestamps are in the site timezone set in app/bootstrap.php
-  function parseDate(s) { if (!s) return null; s = String(s); return new Date(/[zZ]|[+-]\d\d:\d\d$/.test(s) ? s : s.replace(' ', 'T') + '-07:00'); }
+  // Server timestamps are in the site timezone set in app/bootstrap.php (offset passed as A.tz)
+  function parseDate(s) { if (!s) return null; s = String(s); return new Date(/[zZ]|[+-]\d\d:\d\d$/.test(s) ? s : s.replace(' ', 'T') + (A.tz || '+00:00')); }
   function ago(s) {
     var d = parseDate(s); if (!d || isNaN(d)) return '';
     var x = (Date.now() - d.getTime()) / 1000;
@@ -204,8 +206,8 @@
     app.innerHTML =
       '<div class="login">' +
       '<div class="login__art"><div class="login__brand"><span>' + ic('plus') + '</span>' + esc(A.siteName) + '</div>' +
-      '<div class="login__quote"><h2>Everything for your website, in one place.</h2><p>Edit treatments, providers and pages, manage the media library, answer appointment requests and control who has access.</p></div>' +
-      '<div class="login__feat"><span>Treatments</span><span>Providers</span><span>Media library</span><span>Form inbox</span><span>Users &amp; roles</span><span>SEO &amp; redirects</span></div></div>' +
+      '<div class="login__quote"><h2>Everything for your website, in one place.</h2><p>Edit pages, manage the media library, read form submissions and control who has access.</p></div>' +
+      '<div class="login__feat"><span>Pages</span><span>Media library</span><span>Form inbox</span><span>Users &amp; roles</span><span>SEO &amp; redirects</span></div></div>' +
       '<div class="login__panel"><form class="login__form" novalidate>' +
       '<h1>Welcome back</h1><p>Sign in to the ' + esc(A.siteName) + ' dashboard.</p>' +
       (msg ? '<div class="login__err">' + esc(msg) + '</div>' : '<div class="login__err" hidden></div>') +
@@ -242,10 +244,10 @@
       { group: 'Content' }
     ];
     ['services', 'providers', 'pages', 'testimonials', 'faqs', 'locations'].forEach(function (k) {
-      if (R[k] && can('content.view')) items.push({ hash: '#/' + k, label: R[k].label, icon: R[k].icon });
+      if (R[k] && !R[k].hidden && can('content.view')) items.push({ hash: '#/' + k, label: R[k].label, icon: R[k].icon });
     });
     if (can('media.view')) items.push({ hash: '#/media', label: 'Media Library', icon: 'image' });
-    if (can('submissions.view')) { items.push({ group: 'Patients' }); items.push({ hash: '#/submissions', label: 'Form Inbox', icon: 'inbox', badge: true }); }
+    if (can('submissions.view')) { items.push({ group: 'Inbox' }); items.push({ hash: '#/submissions', label: 'Form Inbox', icon: 'inbox', badge: true }); }
     var adm = [];
     if (can('users.manage')) adm.push({ hash: '#/users', label: 'Users & Roles', icon: 'users' });
     if (can('settings.manage')) adm.push({ hash: '#/settings', label: 'Settings', icon: 'settings' });
@@ -334,7 +336,7 @@
     [/^#\/media$/, viewMedia],
     [/^#\/submissions(?:\/(\d+))?$/, viewSubmissions],
     [/^#\/users$/, viewUsers],
-    [/^#\/settings(?:\/([a-z]+))?$/, viewSettings],
+    [/^#\/settings(?:\/([a-z_]+))?$/, viewSettings],
     [/^#\/profile$/, viewProfile],
     [/^#\/activity$/, viewActivity]
   ];
@@ -383,7 +385,7 @@
     var hr = new Date().getHours();
     var greet = hr < 12 ? 'Good morning' : hr < 18 ? 'Good afternoon' : 'Good evening';
     view.innerHTML = '<div class="welcome"><div><h1>' + greet + ', ' + esc((S.user.name || S.user.username).split(' ')[0]) + '</h1><p>Here’s what’s happening on ' + esc(A.siteName) + '.</p></div>' +
-      '<div class="ph__actions">' + (can('content.edit') ? '<a class="btn btn--ghost" href="#/services/new">' + ic('plus') + 'New treatment</a>' : '') + (can('media.upload') ? '<a class="btn btn--ghost" href="#/media">' + ic('upload') + 'Upload media</a>' : '') + '<a class="btn btn--accent" href="' + esc(A.base) + '" target="_blank" rel="noopener">' + ic('external') + 'View site</a></div></div>' +
+      '<div class="ph__actions">' + (can('content.edit') && shown('services') ? '<a class="btn btn--ghost" href="#/services/new">' + ic('plus') + 'New treatment</a>' : '') + (can('content.view') ? '<a class="btn btn--ghost" href="#/pages">' + ic('file-text') + 'Pages</a>' : '') + (can('media.upload') ? '<a class="btn btn--ghost" href="#/media">' + ic('upload') + 'Upload media</a>' : '') + '<a class="btn btn--accent" href="' + esc(A.base) + '" target="_blank" rel="noopener">' + ic('external') + 'View site</a></div></div>' +
       '<div class="grid grid--kpi" id="kpis">' + [1, 2, 3, 4].map(function () { return '<div class="card kpi"><div class="skel" style="width:40%"></div><div class="skel" style="width:60%;height:26px;margin-top:10px"></div></div>'; }).join('') + '</div>';
     get('dashboard').then(function (d) {
       var c = d.counts, v = d.views;
@@ -391,8 +393,8 @@
       $('#kpis', view).innerHTML =
         kpi('#/dashboard', 'trending', '', 'Page views · 30 days', v.total.toLocaleString(), delta === null ? 'Tracking since install' : (delta >= 0 ? '▲ ' : '▼ ') + Math.abs(delta) + '% vs previous 30 days', delta === null ? '' : delta >= 0 ? 'up' : 'down') +
         (c.new_submissions !== undefined ? kpi('#/submissions', 'inbox', 'red', 'New form submissions', c.new_submissions, c.week_submissions + ' in the last 7 days') : kpi('#/pages', 'file-text', 'red', 'Published pages', c.pages, '')) +
-        kpi('#/services', 'activity', 'green', 'Published treatments', c.services, c.providers + ' provider profiles · ' + c.pages + ' pages') +
-        kpi('#/services', 'flag', 'amber', 'Needs content review', c.review, c.drafts + ' drafts · ' + c.media + ' media files');
+        (shown('services') ? kpi('#/services', 'activity', 'green', 'Published treatments', c.services, c.providers + ' provider profiles · ' + c.pages + ' pages') : kpi('#/pages', 'file-text', 'green', 'Published pages', c.pages, c.media + ' media files')) +
+        kpi(shown('services') ? '#/services' : '#/pages?review=1', 'flag', 'amber', 'Needs content review', c.review, c.drafts + ' drafts · ' + c.media + ' media files');
       var g = el('<div class="grid grid--2" style="margin-top:18px"></div>');
       g.appendChild(el('<div class="card"><div class="card__h"><h2>Page views — last 30 days</h2><span class="muted" style="font-size:.82rem">Visitors excluding bots</span></div><div class="card__b"><div class="chart" id="chart"></div></div></div>'));
       var max = d.top.length ? d.top[0].v : 1;
@@ -620,24 +622,30 @@
       var title = item ? (item[def.titleKey] || '(untitled)') : 'New ' + def.singular.toLowerCase();
       document.title = title + ' · ' + A.siteName;
       var readOnly = !canEdit || (!can('content.publish') && item && item.status === 'published');
+      // Raw-HTML pages (template "html"): code editor, Administrators only
+      var isHtml = type === 'pages' && vals.template === 'html';
+      var htmlLocked = isHtml && !isAdmin();
+      if (htmlLocked) readOnly = true;
+      var skipKeys = isHtml ? ['eyebrow', 'intro', 'image', 'show_cta'] : [];
       var groups = def.groups || { content: 'Content' };
-      var mainFields = def.fields.filter(function (f) { return !f.side; });
-      var sideFields = def.fields.filter(function (f) { return f.side && f.key !== 'status'; });
+      var mainFields = def.fields.filter(function (f) { return !f.side && skipKeys.indexOf(f.key) < 0; });
+      var sideFields = def.fields.filter(function (f) { return f.side && f.key !== 'status' && skipKeys.indexOf(f.key) < 0; });
       var hasStatus = def.fields.some(function (f) { return f.key === 'status'; });
       var crumb = '<div class="crumb"><a href="#/' + type + '">' + esc(def.label) + '</a>' + ic('chevron-right') + '<span>' + (isNew ? 'New' : 'Edit') + '</span></div>';
-      var viewUrl = item && item._url ? item._url + (item.status === 'draft' ? '?preview=1' : '') : '';
-      view.innerHTML = header('<span data-title>' + esc(title) + '</span>', '', (viewUrl ? '<a class="btn btn--ghost" href="' + esc(viewUrl) + '" target="_blank" rel="noopener">' + ic('eye') + 'View</a>' : '') + (item && can('content.delete') && !item.is_system ? '<button class="btn btn--danger" data-delete>' + ic('trash') + 'Delete</button>' : ''), crumb) +
-        (readOnly && canEdit ? '<div class="notice">' + ic('info') + '<span>This item is published. Only editors and administrators can change published content.</span></div>' : '') +
+      var viewUrl = item && item._url ? item._url + (item.status === 'draft' || isHtml ? '?preview=1' : '') : '';
+      view.innerHTML = header('<span data-title>' + esc(title) + '</span>', '', (viewUrl ? '<a class="btn btn--ghost" href="' + esc(viewUrl) + '" target="_blank" rel="noopener" title="Opens the last saved version">' + ic('eye') + (isHtml ? 'Preview' : 'View') + '</a>' : '') + (item && can('content.delete') && !item.is_system ? '<button class="btn btn--danger" data-delete>' + ic('trash') + 'Delete</button>' : ''), crumb) +
+        (htmlLocked ? '<div class="notice">' + ic('info') + '<span>This page is raw HTML. Only administrators can edit it.</span></div>' : readOnly && canEdit ? '<div class="notice">' + ic('info') + '<span>This item is published. Only editors and administrators can change published content.</span></div>' : '') +
         '<div class="editor"><div class="card" data-main><div class="tabs" role="tablist">' + Object.keys(groups).filter(function (g) { return mainFields.some(function (f) { return (f.group || 'content') === g; }); }).map(function (g, i) { return '<button class="tab' + (i ? '' : ' is-active') + '" role="tab" data-tab="' + g + '">' + esc(groups[g]) + '</button>'; }).join('') + '</div><div data-panels></div></div>' +
         '<div class="editor__side"><div class="card"><div class="card__h"><h3>Publish</h3><span data-dirty hidden><span class="dirty-dot"></span><span class="muted" style="font-size:.8rem">Unsaved</span></span></div><div class="pub" data-pub></div></div>' +
-        (sideFields.length ? '<div class="card"><div class="card__h"><h3>Settings</h3></div><div class="fields" data-side style="padding:16px;gap:16px"></div></div>' : '') + '</div></div>';
+        (sideFields.length ? '<div class="card"><div class="card__h"><h3>Settings</h3></div><div class="fields" data-side style="padding:16px;gap:16px"></div></div>' : '') +
+        (type === 'pages' && item ? '<div class="card"><div class="card__h"><h3>Revisions</h3><span class="muted" style="font-size:.78rem">latest 30</span></div><div class="card__b--flush" data-revs><div class="card__b"><div class="skel"></div></div></div></div>' : '') + '</div></div>';
 
       var panels = $('[data-panels]', view);
       Object.keys(groups).forEach(function (g, i) {
         var fs = mainFields.filter(function (f) { return (f.group || 'content') === g; });
         if (!fs.length) return;
         var p = el('<div class="fields" data-panel="' + g + '"' + (i ? ' hidden' : '') + '></div>');
-        fs.forEach(function (f) { var fe = buildField(f, vals, onChange, { def: def, isNew: isNew }); if (fe) p.appendChild(fe); });
+        fs.forEach(function (f) { var fe = isHtml && f.key === 'content' ? htmlEditor(f, vals, onChange, readOnly) : buildField(f, vals, onChange, { def: def, isNew: isNew }); if (fe) p.appendChild(fe); });
         panels.appendChild(p);
         if (g === 'seo') { var sp = el('<div data-panel="seo-preview"' + (i ? ' hidden' : '') + '></div>'); panels.appendChild(sp); renderSerp(); }
       });
@@ -662,6 +670,7 @@
         S.dirty = true;
         $('[data-dirty]', view).hidden = false;
         if (key === def.titleKey) $('[data-title]', view).textContent = vals[def.titleKey] || '(untitled)';
+        if (key === 'template' && type === 'pages' && !isNew && (vals.template === 'html') !== isHtml) toast('Save the page, then reload it to switch editors.');
         if (key === 'meta_title' || key === 'meta_description' || key === def.titleKey || key === 'excerpt' || key === 'intro' || key === 'slug') renderSerp();
       }
       function renderSerp() {
@@ -680,6 +689,8 @@
         api('res.save', { type: type, id: isNew ? 0 : +id, data: vals }).then(function (saved) {
           S.dirty = false;
           toast(isNew ? def.singular + ' created.' : 'Changes saved.');
+          if (saved._notice) { toast(saved._notice); if (!isNew) { route(); return; } }
+          if (!isNew) loadRevs();
           if (isNew) { go('#/' + type + '/' + saved.id); } else { busy(btn, false); $('[data-dirty]', view).hidden = true; if (saved.slug && vals.slug !== saved.slug) { vals.slug = saved.slug; var si = $('[data-key="slug"] input', view); if (si) si.value = saved.slug; } }
         }).catch(function (e) {
           busy(btn, false);
@@ -689,6 +700,36 @@
       }
       $('[data-save]', view).addEventListener('click', save);
       bindSaveKey(save);
+
+      // Revisions: every save of a page's content keeps the previous version
+      function loadRevs() {
+        var box = $('[data-revs]', view);
+        if (!box) return;
+        get('page.revisions', { id: item.id }).then(function (rs) {
+          box.innerHTML = rs.length ? '<ul class="list">' + rs.map(function (r) {
+            return '<li><div class="list__main"><strong style="font-weight:600">' + esc(fullDate(r.created_at)) + '</strong><small>' + esc(r.user) + ' · ' + bytes(r.size) + '</small></div>' +
+              '<button class="btn btn--sm btn--plain" data-rev-view="' + r.id + '">View</button>' + (readOnly ? '' : '<button class="btn btn--sm btn--ghost" data-rev-restore="' + r.id + '">Restore</button>') + '</li>';
+          }).join('') + '</ul>' : '<div class="empty-s" style="padding:18px">' + ic('clock') + 'No earlier versions yet.</div>';
+        }).catch(function (e) { box.innerHTML = '<div class="empty-s">' + esc(e.message) + '</div>'; });
+      }
+      if (type === 'pages' && item) {
+        loadRevs();
+        $('[data-revs]', view).addEventListener('click', function (e) {
+          var b;
+          if ((b = e.target.closest('[data-rev-view]'))) {
+            get('page.revision', { id: b.getAttribute('data-rev-view') }).then(function (r) {
+              var ta = el('<textarea class="in in--code" readonly spellcheck="false" style="width:100%;height:60vh;white-space:pre"></textarea>');
+              ta.value = r.content || '';
+              modal({ title: 'Revision from ' + fullDate(r.created_at), body: ta, size: 'wide', buttons: [{ label: 'Close', value: null }] });
+            }).catch(function (er) { toast(er.message, 'err'); });
+          } else if ((b = e.target.closest('[data-rev-restore]'))) {
+            confirmBox('Restore this version?', 'The page content is replaced by this version. The current content is kept as a revision, so you can undo this.', 'Restore', false).then(function (yes) {
+              if (!yes) return;
+              api('page.restore', { id: +b.getAttribute('data-rev-restore') }).then(function () { S.dirty = false; toast('Version restored.'); route(); }).catch(function (er) { toast(er.message, 'err'); });
+            });
+          }
+        });
+      }
       var delBtn = $('[data-delete]', view);
       if (delBtn) delBtn.addEventListener('click', function () {
         confirmBox('Delete “' + title + '”?', 'This cannot be undone.', 'Delete', true).then(function (yes) {
@@ -701,6 +742,44 @@
   }
   var saveHandler = null;
   function bindSaveKey(fn) { saveHandler = fn; }
+
+  /* Code editor for raw-HTML pages: CodeMirror 5 from cdnjs (HTML mode, line numbers, search); plain textarea if it can't load */
+  var CM_BASE = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/';
+  var cmLoading = null;
+  function loadCodeMirror() {
+    if (window.CodeMirror && window.CodeMirror.modes && window.CodeMirror.modes.htmlmixed && window.CodeMirror.commands.find) return Promise.resolve(window.CodeMirror);
+    if (cmLoading) return cmLoading;
+    function css(h) { var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = CM_BASE + h; document.head.appendChild(l); }
+    function js(h) { return new Promise(function (res, rej) { var x = document.createElement('script'); x.src = CM_BASE + h; x.onload = res; x.onerror = function () { rej(new Error('Could not load ' + h)); }; document.head.appendChild(x); }); }
+    css('codemirror.min.css'); css('addon/dialog/dialog.min.css');
+    cmLoading = js('codemirror.min.js')
+      .then(function () { return Promise.all(['mode/xml/xml.min.js', 'mode/javascript/javascript.min.js', 'mode/css/css.min.js', 'addon/dialog/dialog.min.js', 'addon/search/searchcursor.min.js'].map(js)); })
+      .then(function () { return Promise.all(['mode/htmlmixed/htmlmixed.min.js', 'addon/search/search.min.js', 'addon/search/jump-to-line.min.js'].map(js)); })
+      .then(function () { return window.CodeMirror; });
+    cmLoading.catch(function () { cmLoading = null; });
+    return cmLoading;
+  }
+  function htmlEditor(f, vals, onChange, readOnly) {
+    var wrap = el('<div class="f" data-key="' + esc(f.key) + '"><span class="f__label">Page HTML</span>' +
+      '<div class="notice notice--blue" style="margin:0">' + ic('info') + '<span>Paste only this page’s content. The header and footer are shared — use <code>{{header}}</code> and <code>{{footer}}</code>. Use <code>{{media:file-name.jpg}}</code> or a Media Library URL for images.</span></div>' +
+      '<textarea class="in in--code" spellcheck="false" rows="30" style="min-height:60vh;white-space:pre;overflow:auto"></textarea>' +
+      '<p class="f__help" data-cm-status>Loading the code editor… Search: Ctrl/Cmd + F · Jump to line: Alt + G · Save: Ctrl/Cmd + S</p></div>');
+    var ta = $('textarea', wrap);
+    ta.value = vals[f.key] || '';
+    ta.readOnly = !!readOnly;
+    ta.addEventListener('input', function () { vals[f.key] = ta.value; onChange(f.key); });
+    loadCodeMirror().then(function (CM) {
+      if (!document.body.contains(ta)) return;
+      var cm = CM.fromTextArea(ta, { mode: 'htmlmixed', lineNumbers: true, lineWrapping: true, readOnly: !!readOnly, indentUnit: 2, extraKeys: { 'Alt-G': 'jumpToLine' } });
+      cm.setSize(null, '70vh');
+      cm.on('change', function () { vals[f.key] = cm.getValue(); onChange(f.key); });
+      $('[data-cm-status]', wrap).textContent = 'Search: Ctrl/Cmd + F · Jump to line: Alt + G · Save: Ctrl/Cmd + S';
+    }).catch(function () {
+      var st = $('[data-cm-status]', wrap);
+      if (st) st.textContent = 'Plain text editor (the code editor could not be loaded). Save: Ctrl/Cmd + S';
+    });
+    return wrap;
+  }
   document.addEventListener('keydown', function (e) {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's' && saveHandler && document.body.contains($('[data-save]'))) { e.preventDefault(); saveHandler(); }
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k' && S.user) { e.preventDefault(); openPalette(); }
@@ -729,7 +808,7 @@
         $('textarea', wrap).addEventListener('input', function (e) { set(e.target.value); counter(); });
         break;
       case 'code':
-        wrap.innerHTML = label + '<textarea class="in in--code" id="' + id + '" rows="6" spellcheck="false" placeholder="<script>…</script>">' + esc(v) + '</textarea>' + help;
+        wrap.innerHTML = label + '<textarea class="in in--code" id="' + id + '" rows="' + (f.rows || 6) + '" spellcheck="false" placeholder="' + esc(f.placeholder || '<script>…</script>') + '">' + esc(v) + '</textarea>' + help;
         $('textarea', wrap).addEventListener('input', function (e) { set(e.target.value); });
         break;
       case 'slug':
@@ -1183,11 +1262,11 @@
     if (!can('submissions.view')) return denied(view);
     document.title = 'Form Inbox · ' + A.siteName;
     var st = { status: '', form: '', q: '', page: 1, active: openId ? +openId : null };
-    view.innerHTML = header('Form Inbox', 'Appointment requests, contact messages and benefits checks submitted through the website.', '<a class="btn btn--ghost" href="' + A.api + '?r=submissions.export">' + ic('download') + 'Export CSV</a>') +
+    view.innerHTML = header('Form Inbox', 'Messages submitted through the website forms.', '<a class="btn btn--ghost" href="' + A.api + '?r=submissions.export">' + ic('download') + 'Export CSV</a>') +
       '<div class="sub-layout"><div class="card"><div class="toolbar">' +
       '<label class="search-in">' + ic('search') + '<input type="search" placeholder="Search name, phone, email…" data-sq></label>' +
       '<select class="sel" data-sstatus><option value="">Inbox</option><option value="new">New</option><option value="read">Read</option><option value="archived">Archived</option></select>' +
-      '<select class="sel" data-sform><option value="">All forms</option><option value="appointment">Appointments</option><option value="contact">Contact</option><option value="benefits">Benefits checks</option></select>' +
+      '<select class="sel" data-sform><option value="">All forms</option></select>' +
       '</div><div data-slist><div class="card__b"><div class="skel"></div></div></div><div class="pager" data-spager></div></div><div class="sub-detail" data-sdetail></div></div>';
     var list = $('[data-slist]', view), detail = $('[data-sdetail]', view);
     function load() {
@@ -1197,6 +1276,8 @@
         }).join('') + '</ul>' : '<div class="empty-s">' + ic('inbox') + 'No submissions here.</div>';
         $('[data-spager]', view).innerHTML = '<span>' + d.total + ' total · ' + d.counts.new + ' new</span>' + (d.pages > 1 ? '<span class="ph__actions"><button class="btn btn--sm btn--ghost" data-sp="' + (d.page - 1) + '"' + (d.page <= 1 ? ' disabled' : '') + '>' + ic('arrow-left') + '</button><button class="btn btn--sm btn--ghost" data-sp="' + (d.page + 1) + '"' + (d.page >= d.pages ? ' disabled' : '') + '>' + ic('arrow-right') + '</button></span>' : '');
         var b = $('[data-new-badge]'); if (b) { b.textContent = d.counts.new; b.hidden = !d.counts.new; }
+        var sf = $('[data-sform]', view);
+        if (sf && d.types && sf.options.length === 1) Object.keys(d.types).forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = d.types[k]; sf.appendChild(o); });
       }).catch(function (e) { list.innerHTML = '<div class="empty-s">' + esc(e.message) + '</div>'; });
     }
     function show(id) {
@@ -1297,10 +1378,10 @@
     if (!can('settings.manage')) return denied(view);
     var tabs = S.schema.settings;
     tab = tab || 'general';
-    if (!tabs[tab] && tab !== 'system') tab = 'general';
+    if ((!tabs[tab] || tabs[tab].hidden) && tab !== 'system') tab = 'general';
     document.title = 'Settings · ' + A.siteName;
-    view.innerHTML = header('Settings', 'Brand, homepage, integrations, patient forms and SEO.') +
-      '<div class="set-layout"><nav class="card set-nav">' + Object.keys(tabs).map(function (k) { return '<a href="#/settings/' + k + '" class="' + (k === tab ? 'is-active' : '') + '">' + ic(tabs[k].icon) + esc(tabs[k].label) + '</a>'; }).join('') + '<a href="#/settings/system" class="' + (tab === 'system' ? 'is-active' : '') + '">' + ic('database') + 'System &amp; Backup</a></nav><div data-panel></div></div>';
+    view.innerHTML = header('Settings', 'Brand, shared header and footer, integrations and SEO.') +
+      '<div class="set-layout"><nav class="card set-nav">' + Object.keys(tabs).filter(function (k) { return !tabs[k].hidden; }).map(function (k) { return '<a href="#/settings/' + k + '" class="' + (k === tab ? 'is-active' : '') + '">' + ic(tabs[k].icon) + esc(tabs[k].label) + '</a>'; }).join('') + '<a href="#/settings/system" class="' + (tab === 'system' ? 'is-active' : '') + '">' + ic('database') + 'System &amp; Backup</a></nav><div data-panel></div></div>';
     var panel = $('[data-panel]', view);
     if (tab === 'system') return systemPanel(panel);
     get('settings.get').then(function (all) {
@@ -1383,7 +1464,7 @@
     document.body.appendChild(p);
     var input = $('input', p), list = $('.palette__list', p), hl = 0, results = [];
     var nav = navItems().filter(function (n) { return !n.group; }).map(function (n) { return { title: n.label, hash: n.hash, icon: n.icon, label: 'Go to' }; });
-    if (can('content.edit')) ['services', 'providers', 'pages', 'testimonials', 'faqs'].forEach(function (k) { var r = S.schema.resources[k]; nav.push({ title: 'New ' + r.singular.toLowerCase(), hash: '#/' + k + '/new', icon: 'plus', label: 'Create' }); });
+    if (can('content.edit')) ['services', 'providers', 'pages', 'testimonials', 'faqs'].forEach(function (k) { var r = S.schema.resources[k]; if (!r || r.hidden) return; nav.push({ title: 'New ' + r.singular.toLowerCase(), hash: '#/' + k + '/new', icon: 'plus', label: 'Create' }); });
     nav.push({ title: 'My profile', hash: '#/profile', icon: 'user', label: 'Go to' });
     function render(items) {
       results = items; hl = 0;
