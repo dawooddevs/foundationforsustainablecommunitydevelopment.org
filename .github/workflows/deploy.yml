@@ -1,4 +1,5 @@
 # Deploy to SiteGround over SSH (rsync). Run from GitHub → Actions → "Deploy to SiteGround" → Run workflow.
+# Shown under Actions as "Deploy to SiteGround" (manual run only: Run workflow → pick the branch).
 #
 # Repository secrets (Settings → Secrets and variables → Actions):
 #   SSH_HOST         the SSH hostname from Site Tools → Devs → SSH Keys Manager → SSH Credentials
