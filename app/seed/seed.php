@@ -53,6 +53,10 @@ function seed_database(): void
     }
 
     // ---------- FSCD pages: imported from app/seed/fscd/ (see BRIEF.md §6) ----------
+    require_once APP . '/lib/Forms.php';
+    require_once APP . '/lib/HtmlPage.php';
+    require_once APP . '/lib/FscdImport.php';
+    (new FscdImport(true))->run();
 }
 
 function seed_pages(): array

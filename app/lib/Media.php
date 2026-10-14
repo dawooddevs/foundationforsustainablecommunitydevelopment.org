@@ -105,6 +105,47 @@ final class Media
             throw new RuntimeException('That file does not look like a valid PDF.');
         }
 
+        return self::store($file['tmp_name'], $original, $userId, $folder, true);
+    }
+
+    /**
+     * Import a file that is already on the server (seed content, CLI imports) through the same
+     * pipeline as an upload: copied into uploads/YYYY/MM/, WebP version, thumbnail, dimensions
+     * and a media row. The source file is left in place.
+     */
+    public static function importLocal(string $path, string $folder = 'fscd', int $userId = 0, string $alt = ''): array
+    {
+        if (!is_file($path)) {
+            throw new RuntimeException('File not found: ' . basename($path));
+        }
+        if (filesize($path) > self::MAX_BYTES) {
+            throw new RuntimeException('File is larger than 100 MB.');
+        }
+        $original = basename($path);
+        $ext = strtolower(pathinfo($original, PATHINFO_EXTENSION));
+        if (!isset(self::TYPES[$ext])) {
+            throw new RuntimeException('File type .' . $ext . ' is not allowed.');
+        }
+        $tmp = tempnam(sys_get_temp_dir(), 'imp');
+        if ($tmp === false || !copy($path, $tmp)) {
+            throw new RuntimeException('Could not read ' . $original . '.');
+        }
+        $row = self::store($tmp, $original, $userId, $folder, false);
+        if ($alt === '') {
+            $alt = ucfirst(trim((string)preg_replace('/[\s_\-]+/', ' ', pathinfo($original, PATHINFO_FILENAME))));
+        }
+        if ($row['kind'] === 'image') {
+            DB::update('media', ['alt' => mb_substr($alt, 0, 250)], 'id = ?', [$row['id']]);
+            $row['alt'] = $alt;
+        }
+        return $row;
+    }
+
+    /** Move a validated file into uploads/ and create its media row. */
+    private static function store(string $tmp, string $original, int $userId, string $folder, bool $isUpload): array
+    {
+        $ext = strtolower(pathinfo($original, PATHINFO_EXTENSION));
+        [$mime, $kind] = self::TYPES[$ext];
         $sub = 'uploads/' . date('Y/m');
         $dir = ROOT . '/' . $sub;
         if (!is_dir($dir) && !mkdir($dir, 0755, true)) {
@@ -118,7 +159,12 @@ final class Media
             $name = $base . '-' . (++$i) . '.' . $ext;
         }
         $dest = $dir . '/' . $name;
-        if (!move_uploaded_file($file['tmp_name'], $dest) && !rename($file['tmp_name'], $dest)) {
+        $moved = ($isUpload && move_uploaded_file($tmp, $dest)) || @rename($tmp, $dest);
+        if (!$moved && !$isUpload && @copy($tmp, $dest)) {
+            @unlink($tmp);
+            $moved = true;
+        }
+        if (!$moved) {
             throw new RuntimeException('Could not save the uploaded file.');
         }
         @chmod($dest, 0644);
@@ -136,7 +182,7 @@ final class Media
             'alt' => '',
             'title' => ucwords(str_replace('-', ' ', $base)),
             'folder' => substr(slugify($folder), 0, 80),
-            'uploaded_by' => $userId,
+            'uploaded_by' => $userId ?: null,
             'created_at' => now(),
         ];
         if ($kind === 'image') {
@@ -277,7 +323,8 @@ final class Media
     public static function replace(array $old, array $file, int $userId): array
     {
         $new = self::upload($file, $userId, (string)$old['folder']);
-        $keep = array_filter(['alt' => (string)$old['alt'], 'title' => (string)$old['title']], fn($v) => trim($v) !== '');
+        // Keep the item's name too: pages refer to library files as {{media:<original name>}}
+        $keep = array_filter(['alt' => (string)$old['alt'], 'title' => (string)$old['title'], 'original_name' => (string)$old['original_name']], fn($v) => trim($v) !== '');
         if ($keep) {
             DB::update('media', $keep, 'id = ?', [$new['id']]);
             $new = array_merge($new, $keep);

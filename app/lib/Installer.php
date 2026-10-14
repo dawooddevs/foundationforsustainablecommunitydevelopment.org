@@ -54,7 +54,10 @@ final class Installer
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-            Settings::set('notify_email', strtolower(trim($admin['email'])));
+            // Keep a notification address the seed already set (FSCD: info@thefscd.org)
+            if (trim((string)DB::val("SELECT v FROM settings WHERE k = 'notify_email'")) === '') {
+                Settings::set('notify_email', strtolower(trim($admin['email'])));
+            }
             Settings::set('seo_noindex', !empty($opts['noindex']) ? '1' : '0');
             Settings::set('installed_at', now());
         });

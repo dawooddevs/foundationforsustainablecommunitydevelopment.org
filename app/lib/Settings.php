@@ -58,13 +58,18 @@ final class Settings
             'form_accident_es' => '',
             'form_pain_questionnaire' => '',
 
+            // Header & footer shared by the raw-HTML pages (seeded from app/seed/fscd/; see HtmlPage)
+            'site_header_html' => '',
+            'site_footer_html' => '',
+            'nav_active_map' => '',
+
             // Social
             'social_facebook' => '',
             'social_x' => '',
             'social_instagram' => '',
 
             // SEO
-            'seo_title_suffix' => ' | FSCD',
+            'seo_title_suffix' => ' – Foundation for Sustainable Community Development',
             'seo_default_description' => '',
             'seo_og_image' => '',
             'seo_noindex' => '1',

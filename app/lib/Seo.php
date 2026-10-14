@@ -10,6 +10,8 @@ final class Seo
     public static string $image = '';
     public static string $type = 'website';
     public static bool $noindex = false;
+    /** Append the "seo_title_suffix" setting to the title (off for pages whose title is used exactly). */
+    public static bool $suffix = true;
     public static array $schema = [];
     public static array $breadcrumbs = [];
 
@@ -29,7 +31,7 @@ final class Seo
         if ($t === '') {
             return setting('site_name') . ' — ' . setting('tagline');
         }
-        if ($suffix !== '' && !str_contains($t, trim($suffix, ' |-'))) {
+        if (self::$suffix && $suffix !== '' && !str_contains($t, trim($suffix, " |-\u{2013}\u{2014}"))) {
             return $t . $suffix;
         }
         return $t;
@@ -118,13 +120,14 @@ final class Seo
         $same = array_values(array_filter([setting('social_facebook'), setting('social_x'), setting('social_instagram')]));
         $org = [
             '@context' => 'https://schema.org',
-            '@type' => ['MedicalBusiness', 'MedicalOrganization'],
+            '@type' => 'NGO',
             '@id' => abs_url('') . '#organization',
             'name' => setting('site_name'),
             'alternateName' => setting('site_short_name'),
             'description' => setting('brand_description'),
             'url' => abs_url(''),
-            'telephone' => preg_replace('/^tel:/', '', tel_href((string)setting('phone'))),
+            'telephone' => setting('phone') ? preg_replace('/^tel:/', '', tel_href((string)setting('phone'))) : '',
+            'email' => (string)setting('email'),
             'foundingDate' => setting('founded_year'),
             'areaServed' => array_map(fn($c) => ['@type' => 'City', 'name' => $c], csv_list(setting('communities'))),
             'location' => $locs,

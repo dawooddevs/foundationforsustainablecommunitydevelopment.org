@@ -28,6 +28,7 @@ if (PHP_SAPI === 'cli-server') {
 
 require __DIR__ . '/app/bootstrap.php';
 require APP . '/lib/Forms.php';
+require APP . '/lib/HtmlPage.php';
 
 if (!is_installed()) {
     redirect(url('install/'));
@@ -40,6 +41,14 @@ header('X-Frame-Options: SAMEORIGIN');
 $uri = rawurldecode(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/');
 $path = '/' . ltrim(BASE_PATH !== '' && str_starts_with($uri, BASE_PATH) ? substr($uri, strlen(BASE_PATH)) : $uri, '/');
 $query = $_SERVER['QUERY_STRING'] ?? '';
+
+// Old WordPress file URLs (e.g. a CSS background that never existed): a plain 404, no page render
+if (str_starts_with($path, '/wp-content/') || str_starts_with($path, '/wp-includes/')) {
+    http_response_code(404);
+    header('Content-Type: text/plain; charset=utf-8');
+    header('Cache-Control: public, max-age=3600');
+    exit("Not found\n");
+}
 
 // 1. Managed redirects (Dashboard → Redirects)
 $variants = array_unique([$path, rtrim($path, '/'), rtrim($path, '/') . '/']);
@@ -101,8 +110,19 @@ $view = null;
 $vars = [];
 $status = 200;
 
+$templates = ['treatments', 'appointment', 'contact', 'sitemap', 'legal', 'html'];
+$pageView = fn(array $p): string => 'pages/' . (in_array($p['template'], $templates, true) ? $p['template'] : 'page');
+
 if (!$segments) {
-    $view = 'pages/home';
+    // The homepage is the page with slug "home"; the scaffold view is only a fallback
+    if ($page = Content::page('home')) {
+        $view = $pageView($page);
+        $vars['page'] = $page;
+    } elseif (!isset($_GET['preview'])) {
+        $view = 'pages/home';
+    }
+} elseif ($segments === ['home']) {
+    redirect(url('') . ($query !== '' ? '?' . $query : ''), 301);
 } elseif ($segments[0] === Content::SERVICE_BASE && count($segments) === 2) {
     if ($s = Content::service($segments[1])) {
         $view = 'pages/service';
@@ -115,15 +135,15 @@ if (!$segments) {
     }
 } elseif (count($segments) === 1 && preg_match('/^[a-z0-9\-]+$/', $segments[0])) {
     if ($page = Content::page($segments[0])) {
-        $templates = ['treatments', 'appointment', 'contact', 'sitemap', 'legal'];
-        $view = 'pages/' . (in_array($page['template'], $templates, true) ? $page['template'] : 'page');
+        $view = $pageView($page);
         $vars['page'] = $page;
     }
 }
 
 // Preview drafts for logged-in dashboard users
-if (!$view && isset($_GET['preview']) && $segments) {
+if (!$view && isset($_GET['preview'])) {
     Auth::start();
+    $segments = $segments ?: ['home'];
     if (Auth::user() && Auth::can('content.view')) {
         if ($segments[0] === Content::SERVICE_BASE && isset($segments[1]) && ($s = DB::one('SELECT * FROM services WHERE slug = ?', [$segments[1]]))) {
             $view = 'pages/service';
@@ -132,13 +152,16 @@ if (!$view && isset($_GET['preview']) && $segments) {
             $view = 'pages/provider';
             $vars['provider'] = $p;
         } elseif ($page = DB::one('SELECT * FROM pages WHERE slug = ?', [$segments[0]])) {
-            $view = 'pages/page';
+            $view = $pageView($page);
             $vars['page'] = $page;
         }
         Seo::$noindex = true;
     }
 }
 
+if (!$view && !$segments) {
+    $view = 'pages/home';
+}
 if (!$view) {
     $status = 404;
     $view = 'pages/404';
@@ -148,7 +171,8 @@ http_response_code($status);
 $vars['path'] = $path;
 $content = render($view, $vars);
 header('Content-Type: text/html; charset=utf-8');
-echo render('layout', ['content' => $content, 'path' => $path]);
+// Views can pick the shell: raw-HTML pages use the minimal layout-html (see pages/html.php)
+echo render($GLOBALS['page_layout'] ?? 'layout', ['content' => $content, 'path' => $path]);
 
 // Lightweight, cookie-free page view counter for the dashboard
 if ($status === 200 && !is_bot() && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'GET' && !isset($_GET['preview'])) {

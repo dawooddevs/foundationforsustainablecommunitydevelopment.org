@@ -186,6 +186,12 @@ function schema_statements(string $driver): array
             day VARCHAR(10) NOT NULL,
             path VARCHAR(255) NOT NULL,
             views INT NOT NULL DEFAULT 0",
+        'page_revisions' => "
+            id {ID},
+            page_id INT NOT NULL,
+            content {LONGTEXT} NULL,
+            user_id INT NULL,
+            created_at {DT} NULL",
         'login_attempts' => "
             id {ID},
             ip VARCHAR(64) NOT NULL,
@@ -209,6 +215,7 @@ function schema_statements(string $driver): array
         'CREATE INDEX idx_activity_created ON activity (created_at)',
         'CREATE INDEX idx_login_attempts_ip ON login_attempts (ip, created_at)',
         'CREATE INDEX idx_faqs_grp ON faqs (grp, sort_order)',
+        'CREATE INDEX idx_page_revisions_page ON page_revisions (page_id, id)',
     ];
     if ($driver === 'sqlite') {
         $indexes = array_map(fn($s) => preg_replace('/^CREATE (UNIQUE )?INDEX /', 'CREATE $1INDEX IF NOT EXISTS ', $s), $indexes);

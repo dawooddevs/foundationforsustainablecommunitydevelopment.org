@@ -10,7 +10,31 @@ final class Forms
         'appointment' => 'Appointment Request',
         'contact' => 'Contact Message',
         'benefits' => 'Benefits Check',
+        'home_inquiry' => 'Website Inquiry (Home page)',
+        'fscd_contact' => 'Contact Conversation',
     ];
+
+    /**
+     * Per-form behaviour. consent: require the "consent" checkbox. subject: take the email subject from
+     * the posted "_subject" field (else `default_subject`). redirect: where a no-JavaScript submission
+     * returns to (a site-relative path). Types not listed use the defaults.
+     */
+    public const OPTIONS = [
+        'home_inquiry' => ['consent' => false, 'subject' => true, 'default_subject' => 'New FSCD Website Inquiry', 'redirect' => '/?submitted=1#contact'],
+        'fscd_contact' => ['consent' => false, 'subject' => true, 'default_subject' => 'FSCD Website: General Inquiry', 'redirect' => '/contact/?submitted=1#conversation'],
+    ];
+
+    public static function option(string $type, string $key, $default = null)
+    {
+        $defaults = ['consent' => true, 'subject' => false, 'default_subject' => '', 'redirect' => ''];
+        return self::OPTIONS[$type][$key] ?? $defaults[$key] ?? $default;
+    }
+
+    /** Only same-site paths ("/contact/?x=1#y"); anything else falls back to the homepage. */
+    public static function safePath(string $p): string
+    {
+        return (preg_match('~^/(?![/\\\\])[^\s\\\\]*$~', $p) === 1) ? $p : '/';
+    }
 
     public static function token(): string
     {
@@ -44,6 +68,29 @@ final class Forms
             'email' => ['label' => 'Email', 'type' => 'email', 'required' => true, 'autocomplete' => 'email', 'half' => true],
         ];
         $fields = match ($type) {
+            // FSCD home page form (field names are the snake_case names used in the page HTML)
+            'home_inquiry' => [
+                'first_name' => ['label' => 'First Name', 'type' => 'text', 'required' => true],
+                'last_name' => ['label' => 'Last Name', 'type' => 'text', 'required' => true],
+                'email' => ['label' => 'Email Address', 'type' => 'email', 'required' => true],
+                'organization' => ['label' => 'Organization', 'type' => 'text'],
+                'interest' => ['label' => 'I Am Interested In', 'type' => 'text', 'required' => true],
+                'message' => ['label' => 'Your Message', 'type' => 'textarea', 'required' => true],
+            ],
+            // FSCD contact page form (topic router)
+            'fscd_contact' => [
+                'topic' => ['label' => 'Topic', 'type' => 'text'],
+                'name' => ['label' => 'Your Name', 'type' => 'text', 'required' => true],
+                'email' => ['label' => 'Email', 'type' => 'email', 'required' => true],
+                'organization' => ['label' => 'Organization', 'type' => 'text'],
+                'role_title' => ['label' => 'Role / Title', 'type' => 'text'],
+                'location' => ['label' => 'Location', 'type' => 'text'],
+                'country_location' => ['label' => 'Country / Location', 'type' => 'text', 'required' => true],
+                'role_community_profile' => ['label' => 'Role / Community Profile', 'type' => 'text', 'required' => true],
+                'community_need' => ['label' => 'Community Need', 'type' => 'text', 'required' => true],
+                'subject' => ['label' => 'Subject', 'type' => 'text', 'required' => true],
+                'message' => ['label' => 'Tell Us More', 'type' => 'textarea', 'required' => true],
+            ],
             'appointment' => $common + [
                 'location' => ['label' => 'Preferred location', 'type' => 'select', 'options' => $locations, 'required' => true, 'half' => true],
                 'patient_status' => ['label' => 'New or current patient', 'type' => 'select', 'options' => ['New patient', 'Current patient'], 'required' => true, 'half' => true],
@@ -67,7 +114,7 @@ final class Forms
             ],
         };
         // A location choice only makes sense once offices are added in the dashboard
-        if (count($locations) < 2) {
+        if (count($locations) < 2 && !isset(self::OPTIONS[$type])) {
             unset($fields['location']);
         }
         return $fields;
@@ -76,12 +123,22 @@ final class Forms
     public static function handle(): void
     {
         $isAjax = str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json');
+        // fetch() posts may send JSON instead of form fields
+        if (str_contains($_SERVER['CONTENT_TYPE'] ?? '', 'application/json')) {
+            $json = json_decode((string)file_get_contents('php://input'), true);
+            $_POST = is_array($json) ? array_map(fn($v) => is_scalar($v) ? (string)$v : '', $json) : [];
+        }
         $fail = function (string $msg, int $code = 422) use ($isAjax) {
             if ($isAjax) {
                 json_out(['ok' => false, 'error' => $msg], $code);
             }
             http_response_code($code);
-            echo '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><body style="font-family:system-ui;max-width:560px;margin:4rem auto;padding:0 1rem"><h1>We couldn\'t send your request</h1><p>' . e($msg) . '</p><p><a href="javascript:history.back()">Go back</a> or call <a href="' . e(tel_href(setting('phone'))) . '">' . e(setting('phone')) . '</a>.</p>';
+            $phone = (string)setting('phone');
+            $email = (string)setting('email');
+            $alt = $phone !== ''
+                ? ' or call <a href="' . e(tel_href($phone)) . '">' . e($phone) . '</a>'
+                : ($email !== '' ? ' or email <a href="mailto:' . e($email) . '">' . e($email) . '</a>' : '');
+            echo '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="robots" content="noindex"><body style="font-family:system-ui;max-width:560px;margin:4rem auto;padding:0 1rem"><h1>We couldn\'t send your request</h1><p>' . e($msg) . '</p><p><a href="javascript:history.back()">Go back</a>' . $alt . '.</p>';
             exit;
         };
         if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
@@ -97,7 +154,7 @@ final class Forms
         }
         $since = date('Y-m-d H:i:s', time() - 600);
         if ((int)DB::val('SELECT COUNT(*) FROM submissions WHERE ip = ? AND created_at > ?', [client_ip(), $since]) >= 5) {
-            $fail('Too many requests. Please call us instead.', 429);
+            $fail(setting('phone') ? 'Too many requests. Please call us instead.' : 'Too many requests. Please try again later.', 429);
         }
         $data = [];
         foreach (self::fields($type) as $name => $f) {
@@ -117,15 +174,23 @@ final class Forms
             }
             $data[$name] = $v;
         }
-        if (empty($_POST['consent'])) {
-            $fail('Please confirm we may contact you about your request.');
+        if (self::option($type, 'consent')) {
+            if (empty($_POST['consent'])) {
+                $fail('Please confirm we may contact you about your request.');
+            }
+            $data['consent'] = 'Yes';
         }
-        $data['consent'] = 'Yes';
         $page = mb_substr((string)($_POST['_page'] ?? ''), 0, 250);
-        $name = trim(($data['first_name'] ?? '') . ' ' . ($data['last_name'] ?? ''));
+        $name = trim((string)($data['name'] ?? '')) ?: trim(($data['first_name'] ?? '') . ' ' . ($data['last_name'] ?? ''));
+        // Per-submission email subject (single line, no tags), e.g. "FSCD Website: General Inquiry"
+        $subject = '';
+        if (self::option($type, 'subject')) {
+            $subject = trim((string)preg_replace('/\s+/', ' ', strip_tags((string)($_POST['_subject'] ?? ''))));
+            $subject = mb_substr($subject, 0, 150) ?: (string)self::option($type, 'default_subject');
+        }
         $id = DB::insert('submissions', [
             'form' => $type,
-            'name' => $name,
+            'name' => mb_substr($name, 0, 190),
             'email' => $data['email'] ?? '',
             'phone' => $data['phone'] ?? '',
             'data' => json_encode($data, JSON_UNESCAPED_UNICODE),
@@ -138,7 +203,7 @@ final class Forms
         if ($forwarded) {
             DB::update('submissions', ['forwarded' => 1], 'id = ?', [$id]);
         }
-        self::notify($type, $data, $page);
+        self::notify($type, $data, $page, $subject);
 
         $msg = $type === 'appointment'
             ? 'Thank you! Your request has been received. Our team will contact you to confirm your appointment time.'
@@ -146,8 +211,12 @@ final class Forms
         if ($isAjax) {
             json_out(['ok' => true, 'message' => $msg]);
         }
-        $back = $page && str_starts_with($page, '/') ? $page : url('');
-        redirect($back . (str_contains($back, '?') ? '&' : '?') . 'sent=1#form');
+        if (($to = (string)self::option($type, 'redirect')) !== '') {
+            redirect(url(self::safePath($to)));
+        }
+        $back = self::safePath($page ?: '/');
+        $back = (string)preg_replace('/#.*$/', '', $back);
+        redirect(url($back) . (str_contains($back, '?') ? '&' : '?') . 'sent=1#form');
     }
 
     private static function forward(string $type, array $data, string $page): bool
@@ -179,7 +248,7 @@ final class Forms
         return $code >= 200 && $code < 300;
     }
 
-    private static function notify(string $type, array $data, string $page): void
+    private static function notify(string $type, array $data, string $page, string $subject = ''): void
     {
         $to = trim((string)setting('notify_email'));
         if ($to === '' || !function_exists('mail')) {
@@ -200,6 +269,8 @@ final class Forms
         if (!empty($data['email']) && filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $headers[] = 'Reply-To: ' . $data['email'];
         }
-        @mail($to, 'New ' . self::TYPES[$type] . ' — ' . setting('site_short_name'), implode("\n", $lines), implode("\r\n", $headers));
+        $subject = $subject !== '' ? $subject : 'New ' . self::TYPES[$type] . ' — ' . setting('site_short_name');
+        $subject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+        @mail($to, $subject, implode("\n", $lines), implode("\r\n", $headers));
     }
 }
